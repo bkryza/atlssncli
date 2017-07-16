@@ -28,14 +28,14 @@ def list_spaces(docs, page, format):
 @click.argument('space')
 @pass_docs
 def create_space(docs, space):
-    """List existing spaces"""
+    """Create new space"""
     click.echo(ctx.parent.get_help())
 
 @docs.command('delete-space')
 @click.argument('space')
 @pass_docs
-def create_space(docs, space):
-    """List existing spaces"""
+def delete_space(docs, space):
+    """Delete existing space"""
     click.echo(ctx.parent.get_help())
 
 @docs.command('show-page')

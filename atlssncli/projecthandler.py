@@ -75,17 +75,10 @@ class ProjectHandler(CommandHandler):
                 project_details.append(['lead', res['lead']['name']])
         if 'url' in res:
             project_details.append(['url', res['url']])
-        #if 'components' in res:
-        #    project_details.append(['components', 
-        #        ",".join(list(map(lambda x: x['name'], res['components'])))])
-        #if 'issueTypes' in res:
-        #    project_details.append(['roles', list(map(lambda x: x['name'], res[])))
-
         click.echo(format_pretty_table(project_details, column_names))
 
     def list_projects(self):
-        """List all projects.
-        """
+        """List all projects"""
         LOG.debug("Listing projects...")
 
         res = self.client.get_all_projects()
@@ -99,9 +92,19 @@ class ProjectHandler(CommandHandler):
         click.echo(format_pretty_table(projects, column_names))
 
     def select_project(self, project):
+        """Select active project"""
 
-
-        pass
+        active_project = None
+        if not project:
+            active_project = self.config.get_project()
+        else:
+            self.config.set_project(project)
+            active_project = project
+        
+        if not active_project:
+            click.echo("You have not selected active project")
+        else:
+            click.echo("Active project: %s"%(active_project))
 
     def create_project(self, project):
 

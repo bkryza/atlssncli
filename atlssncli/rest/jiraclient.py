@@ -5,6 +5,7 @@ import json
 from restclient import RestClient
 
 class JiraClient(RestClient):
+    """JIRA REST client"""
 
     def __init__(self, endpoint, auth):
         super(JiraClient, self).__init__(endpoint, auth) 

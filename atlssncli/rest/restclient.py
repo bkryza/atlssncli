@@ -11,6 +11,7 @@ except ImportError:
 
 
 class RestClient(object):
+    """Simple REST client"""
 
     def __init__(self, endpoint, auth):
         self.endpoint = endpoint

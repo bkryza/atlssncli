@@ -2,7 +2,6 @@ import ConfigParser
 import logging as LOG
 from os.path import expanduser, join
 from sets import Set
-import logging
 
 HOME_DIR = expanduser("~")
 CONFIG_DIR = join(HOME_DIR, ".atlssncli")
@@ -40,6 +39,7 @@ class Config(object):
 
     def validate(self):
         """Validate the config file"""
+
         if not REQUIRED_SECTIONS.issubset(Set(self.config.sections())):
             raise Exception("Missing required config sections: %s"%
                       (",".join(REQUIRED_SECTIONS.
@@ -48,10 +48,37 @@ class Config(object):
 
     def get_auth(self, service = None):
         """Return the authentication credentials for service"""
+
         return (self.config.get('common', 'username'), 
                 self.config.get('common', 'password'))
 
     def get_endpoint(self, service):
         """Get endpoint of specific service"""
+
         return self.config.get(service, 'endpoint')
+
+
+    def get_project(self):
+        """Get active project"""
+
+        active_project = None
+        try:
+            active_project = self.config.get('common', 'active_project')
+        except Exception as e:
+            pass
+
+        return active_project
+
+    def set_project(self, project):
+        """Set active project"""
+
+        self.config.set('common', 'active_project', project)
+        self.sync()
+
+    def sync(self):
+        """Update configuration file"""
+        LOG.debug("SYNC, sections: %s", self.config.sections())
+
+        with open(self.path, 'wb') as configfile:
+            self.config.write(configfile)
 

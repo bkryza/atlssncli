@@ -69,9 +69,9 @@ def list_components(project, project_id):
         raise click.ClickException(e.message)
 
 @project.command()
-@click.argument('name')
+@click.argument('project_id', required=False)
 @pass_project
-def select(project, name):
+def select(project, project_id):
     """Select active project
 
        All consecutive commands will be performed in the scope of that project.
