@@ -2,23 +2,19 @@ import requests
 import logging as LOG
 import json
 
-from restclient import RestClient
+from restclient import *
 
 class JiraClient(RestClient):
     """JIRA REST client"""
 
     def __init__(self, endpoint, auth):
-        super(JiraClient, self).__init__(endpoint, auth) 
+        super(JiraClient, self).__init__(endpoint, auth)
         pass
 
+    @GET('project')
     def get_all_projects(self):
         """Get all projects.
         """
-        req = self.build_request(['project'])
-        LOG.debug('REQUEST: GET %s', req)
-        r = requests.get(req, auth=self.auth)
-        r.raise_for_status()
-        return r.json()
 
     def create_project(self, project):
         """Create new project.
@@ -40,14 +36,15 @@ class JiraClient(RestClient):
         #return r.json()
         return {}
 
+    @GET('project/{project_id}')
     def get_project(self, project_id):
         """Get project details.
         """
-        req = self.build_request(['project', project_id])
-        LOG.debug('REQUEST: GET %s', str(req))
-        r = requests.get(req, auth=self.auth)
-        r.raise_for_status()
-        return r.json()
 
+    @GET('project/{issue}')
+    def get_issue(self, issue):
+        """
+        Get specific JIRA issue
+        """
 
 

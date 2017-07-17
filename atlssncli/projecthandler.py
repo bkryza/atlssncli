@@ -13,8 +13,8 @@ from rest.jiraclient import JiraClient
 class ProjectHandler(CommandHandler):
 
     def __init__(self, config):
-        super(ProjectHandler, self).__init__(config) 
-        self.client = JiraClient(config.get_endpoint('jira'), 
+        super(ProjectHandler, self).__init__(config)
+        self.client = JiraClient(config.get_endpoint('jira'),
                                  config.get_auth())
         self.qb = QueryBuilder(config)
         pass
@@ -87,7 +87,7 @@ class ProjectHandler(CommandHandler):
         projects = []
         for project in res:
             projects.append([project['key'], project['id'], project['name']])
-        
+
         #  LOG.debug(projects)
         click.echo(format_pretty_table(projects, column_names))
 
@@ -107,10 +107,8 @@ class ProjectHandler(CommandHandler):
             click.echo("Active project: %s"%(active_project))
 
     def create_project(self, project):
-
         pass
 
     def delete_project(self, project):
-        
         pass
 

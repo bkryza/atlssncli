@@ -70,6 +70,8 @@ def modify(issue, summary, project, issue_type, assignee, reporter,
 @pass_issue
 def status(issue):
     """Get issue status"""
+    LOG.debug("Getting issue details %s", issue)
+
     pass
 
 @issue.command()
