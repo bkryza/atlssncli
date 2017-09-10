@@ -34,7 +34,8 @@ def merge_dicts(*dict_args):
     return result
 
 def render_path(path, args):
-    """Render REST path from *args
+    """
+    Render REST path from *args
     """
     LOG.debug('RENDERING PATH FROM: %s,  %s', path, args)
     result = path
@@ -66,7 +67,7 @@ class GET(object):
             req = rest_client.build_request(req_path.split('/'), query_parameters)
 
             LOG.debug('REQUEST: GET %s', req)
-            r = requests.get(req, auth=rest_client.auth)
+            r = requests.get(req, auth=rest_client.auth, headers={'accept': 'application/json'})
             r.raise_for_status()
             return r.json()
         return get_decorator
@@ -93,7 +94,9 @@ def body(name, value=None):
 
 
 class RestClient(object):
-    """Simple REST client"""
+    """
+    Simple REST client
+    """
 
     def __init__(self, endpoint, auth):
         self.endpoint = endpoint
@@ -103,7 +106,8 @@ class RestClient(object):
         pass
 
     def build_request(self, path_components = [], query_components = {}):
-        """Builds request by combining the endpoint with path
+        """
+        Builds request by combining the endpoint with path
         and query components.
         """
         LOG.debug("Building request from path tokens: %s", path_components)

@@ -31,4 +31,8 @@ class Docs(CommandGroup):
     def __init__(self, config):
         super(Docs, self).__init__(config)
 
+class Info(CommandGroup):
+    def __init__(self, config):
+        super(Info, self).__init__(config)
+
 

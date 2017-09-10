@@ -16,6 +16,12 @@ class JiraClient(RestClient):
         """Get all projects.
         """
 
+    @GET('serverInfo')
+    def get_info(self):
+        """Get JIRA server info"""
+
+
+    # TODO Add POST decorator
     def create_project(self, project):
         """Create new project.
         """
@@ -26,6 +32,7 @@ class JiraClient(RestClient):
         #return r.json()
         return {}
 
+    # TODO Add PUT decorator
     def update_project(self, project):
         """Update project.
         """

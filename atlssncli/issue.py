@@ -1,4 +1,5 @@
 import click
+import logging as LOG
 
 from commandgroup import *
 from projecthandler import ProjectHandler
@@ -45,7 +46,7 @@ def create(issue, summary, project, issue_type, assignee, reporter,
     pass
 
 @issue.command()
-@click.argument('issue')
+@click.argument('issue_id')
 @click.option('-p', '--project', help='Project id')
 @click.option('-t', '--issue-type', help='Issue type')
 @click.option('-a', '--assignee', help='Assignee')
@@ -66,86 +67,86 @@ def modify(issue, summary, project, issue_type, assignee, reporter,
     pass
 
 @issue.command()
-@click.argument('issue')
+@click.argument('issue_id')
 @pass_issue
-def status(issue):
+def status(issue, issue_id):
     """Get issue status"""
     LOG.debug("Getting issue details %s", issue)
 
     pass
 
 @issue.command()
-@click.argument('issue')
+@click.argument('issue_id')
 @pass_issue
-def delete(issue):
+def delete(issue, issue_id):
     """Delete issue"""
     pass
 
 @issue.command()
-@click.argument('issue')
+@click.argument('issue_id')
 @click.argument('assignee')
 @pass_issue
-def assign(issue):
+def assign(issue, issue_id, assignee):
     """Assign issue"""
     pass
 
 @issue.command()
-@click.argument('issue')
+@click.argument('issue_id')
 @click.argument('assignee')
 @pass_issue
-def assign(issue, assignee):
+def assign(issue, issue_id, assignee):
     """Assign issue"""
     pass
 
 @issue.command('list-transitions')
-@click.argument('issue')
+@click.argument('issue_id')
 @pass_issue
-def list_transitions(issue):
+def list_transitions(issue, issue_id):
     """List possible transitions"""
     pass
 
 @issue.command('transition')
-@click.argument('issue')
+@click.argument('issue_id')
 @click.argument('state')
 @pass_issue
-def transition(issue, state):
+def transition(issue, issue_id, state):
     """Transition the issue to another state"""
     pass
 
 @issue.command('list-votes')
-@click.argument('issue')
+@click.argument('issue_id')
 @pass_issue
-def list_votes(issue):
+def list_votes(issue, issue_id):
     """List issue votes"""
     pass
 
 @issue.command()
-@click.argument('issue')
+@click.argument('issue_id')
 @pass_issue
-def vote(issue):
+def vote(issue, issue_id):
     """Vote for an issue"""
     pass
 
 @issue.command()
-@click.argument('issue')
+@click.argument('issue_id')
 @pass_issue
-def unvote(issue):
+def unvote(issue, issue_id):
     """Unvote an issue"""
     pass
 
 @issue.command('create-branch')
-@click.argument('issue')
+@click.argument('issue_id')
 @click.argument('repository')
 @click.argument('branch')
 @pass_issue
-def create_branch(issue, repository, branch):
+def create_branch(issue, issue_id, repository, branch):
     """Create an issue branch in repository from existing branch"""
     pass
 
 @issue.command('list-branches')
-@click.argument('issue')
+@click.argument('issue_id')
 @pass_issue
-def list_branches(issue):
+def list_branches(issue, issue_id):
     """List branches created for this issue"""
     pass
 

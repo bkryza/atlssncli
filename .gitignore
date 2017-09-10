@@ -1,3 +1,7 @@
 *.pyc
 .DS_Store
+build
+dist
+venv
+atlssncli.egg-info
 

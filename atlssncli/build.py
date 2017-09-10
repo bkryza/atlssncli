@@ -4,7 +4,6 @@ from commandgroup import *
 
 pass_build = click.make_pass_decorator(Build)
 
-
 #
 # BUILD GROUP
 #
@@ -20,4 +19,12 @@ def help(ctx):
     """Print build command help"""
     click.echo(ctx.parent.get_help())
 
+@build.command()
+@click.argument('plan_id')
+@pass_build
+def status(plan, plan_id):
+    """Get plan status"""
+    LOG.debug("Getting plan status %s", issue)
+
+    pass
 

@@ -16,6 +16,7 @@ from build import build
 from git import git
 from issue import issue
 from project import project
+from info import info
 from . import __version__
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -28,7 +29,9 @@ pass_issue = click.make_pass_decorator(Issue)
 @click.option('-v', '--verbose', count=True, help="Enable verbose output")
 @click.pass_context
 def cli(ctx, verbose):
-    """Command line interface to Atlassian services."""
+    """
+    Command line interface to Atlassian services.
+    """
     if verbose == 0:
         LOG.basicConfig(stream=sys.stderr, level=LOG.ERROR)
     else:
@@ -69,6 +72,7 @@ cli.add_command(build)
 cli.add_command(git)
 cli.add_command(agile)
 cli.add_command(docs)
+cli.add_command(info)
 
 
 
