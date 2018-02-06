@@ -9,8 +9,8 @@ from config import Config
 from commandhandler import CommandHandler
 from querybuilder import QueryBuilder
 
+
 class IssueHandler(CommandHandler):
 
     def __init__(self):
         pass
-

@@ -25,7 +25,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 pass_issue = click.make_pass_decorator(Issue)
 
 
-@click.group(context_settings={'help_option_names':['-h','--help']})
+@click.group(context_settings={'help_option_names': ['-h', '--help']})
 @click.option('-v', '--verbose', count=True, help="Enable verbose output")
 @click.pass_context
 def cli(ctx, verbose):
@@ -46,11 +46,13 @@ def cli(ctx, verbose):
         LOG.error("Configuration error")
         raise click.ClickException(e.message)
 
+
 @cli.command()
 @click.pass_context
 def help(ctx):
     """Print help"""
     click.echo(ctx.parent.get_help())
+
 
 @cli.command()
 @click.pass_context
@@ -58,10 +60,12 @@ def version(ctx):
     """Print version"""
     click.echo(".".join(map(lambda x: str(x), __version__)))
 
+
 @cli.command('update-cache')
 @click.pass_context
 def update_cache(ctx):
     """Update autocompletion cache"""
+
 
 #
 # Add command groups from separate modules
@@ -73,7 +77,3 @@ cli.add_command(git)
 cli.add_command(agile)
 cli.add_command(docs)
 cli.add_command(info)
-
-
-
-

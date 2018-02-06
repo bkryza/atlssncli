@@ -8,17 +8,21 @@ pass_info = click.make_pass_decorator(Info)
 #
 # INFO GROUP
 #
+
+
 @click.group()
 @click.pass_context
 def info(ctx):
     """Show information about configured Atlassian services"""
     ctx.obj = Info(ctx.obj['CONFIG'])
 
+
 @info.command()
 @click.pass_context
 def help(ctx):
     """Print info command help"""
     click.echo(ctx.parent.get_help())
+
 
 @info.command()
 @pass_info
@@ -29,6 +33,7 @@ def jira(info):
         handler.show_jira_info()
     except Exception as e:
         raise click.ClickException(e.message)
+
 
 @info.command()
 @pass_info

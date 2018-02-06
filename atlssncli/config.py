@@ -29,34 +29,33 @@ REQUIRED_SECTIONS = Set(['common', 'jira', 'bitbucket', 'bamboo'])
 
 class Config(object):
 
-    def __init__(self, config_path = CONFIG_PATH):
+    def __init__(self, config_path=CONFIG_PATH):
         self.path = config_path
         self.config = ConfigParser.ConfigParser()
         LOG.debug('Reading configuration from %s', self.path)
         self.config.read(self.path)
-        LOG.debug('Got configuration sections: %s', 
-                ",".join(self.config.sections()))
+        LOG.debug('Got configuration sections: %s',
+                  ",".join(self.config.sections()))
 
     def validate(self):
         """Validate the config file"""
 
         if not REQUIRED_SECTIONS.issubset(Set(self.config.sections())):
-            raise Exception("Missing required config sections: %s"%
-                      (",".join(REQUIRED_SECTIONS.
-                          difference(Set(self.config.sections())))))
+            raise Exception("Missing required config sections: %s" %
+                            (",".join(REQUIRED_SECTIONS.
+                                      difference(Set(self.config.sections())))))
         return True
 
-    def get_auth(self, service = None):
+    def get_auth(self, service=None):
         """Return the authentication credentials for service"""
 
-        return (self.config.get('common', 'username'), 
+        return (self.config.get('common', 'username'),
                 self.config.get('common', 'password'))
 
     def get_endpoint(self, service):
         """Get endpoint of specific service"""
 
         return self.config.get(service, 'endpoint')
-
 
     def get_project(self):
         """Get active project"""
@@ -81,4 +80,3 @@ class Config(object):
 
         with open(self.path, 'wb') as configfile:
             self.config.write(configfile)
-

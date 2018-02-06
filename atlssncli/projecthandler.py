@@ -10,6 +10,7 @@ from commandhandler import CommandHandler
 from querybuilder import QueryBuilder
 from rest.jiraclient import JiraClient
 
+
 class ProjectHandler(CommandHandler):
 
     def __init__(self, config):
@@ -23,7 +24,7 @@ class ProjectHandler(CommandHandler):
         """Show project components.
         """
         LOG.debug('Getting project components: %s', project)
-        
+
         res = self.client.get_project(project)
 
         if not 'components' in res:
@@ -40,7 +41,7 @@ class ProjectHandler(CommandHandler):
         """Show project issue types.
         """
         LOG.debug('Getting project issue types: %s', project)
-        
+
         res = self.client.get_project(project)
 
         if not 'issueTypes' in res:
@@ -57,7 +58,7 @@ class ProjectHandler(CommandHandler):
         """Show basic information about the project.
         """
         LOG.debug('Getting project information: %s', project)
-        
+
         res = self.client.get_project(project)
 
         column_names = ['Property', 'Value']
@@ -100,15 +101,14 @@ class ProjectHandler(CommandHandler):
         else:
             self.config.set_project(project)
             active_project = project
-        
+
         if not active_project:
             click.echo("You have not selected active project")
         else:
-            click.echo("Active project: %s"%(active_project))
+            click.echo("Active project: %s" % (active_project))
 
     def create_project(self, project):
         pass
 
     def delete_project(self, project):
         pass
-

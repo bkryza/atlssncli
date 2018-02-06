@@ -11,6 +11,7 @@ from querybuilder import QueryBuilder
 from rest.jiraclient import JiraClient
 from rest.bambooclient import BambooClient
 
+
 class InfoHandler(CommandHandler):
 
     def __init__(self, config):
@@ -50,5 +51,3 @@ class InfoHandler(CommandHandler):
         data.append(["State", res['state']])
 
         click.echo(format_smart_table(data, []))
-
-

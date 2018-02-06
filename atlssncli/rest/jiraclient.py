@@ -4,6 +4,7 @@ import json
 
 from restclient import *
 
+
 class JiraClient(RestClient):
     """JIRA REST client"""
 
@@ -20,7 +21,6 @@ class JiraClient(RestClient):
     def get_info(self):
         """Get JIRA server info"""
 
-
     # TODO Add POST decorator
     def create_project(self, project):
         """Create new project.
@@ -28,8 +28,8 @@ class JiraClient(RestClient):
         req = self.build_request(['project'])
         LOG.debug('REQUEST: POST %s', req)
         #r = requests.post(req, data=project)
-        #r.raise_for_status()
-        #return r.json()
+        # r.raise_for_status()
+        # return r.json()
         return {}
 
     # TODO Add PUT decorator
@@ -39,8 +39,8 @@ class JiraClient(RestClient):
         req = self.build_request(['project', project['key']])
         LOG.debug('REQUEST: PUT %s', req)
         #r = requests.post(req, data=project)
-        #r.raise_for_status()
-        #return r.json()
+        # r.raise_for_status()
+        # return r.json()
         return {}
 
     @GET('project/{project_id}')
@@ -53,5 +53,3 @@ class JiraClient(RestClient):
         """
         Get specific JIRA issue
         """
-
-

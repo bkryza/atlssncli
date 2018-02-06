@@ -17,6 +17,7 @@ def issue(ctx):
     """
     ctx.obj = Issue(ctx.obj['CONFIG'])
 
+
 @issue.command()
 @click.pass_context
 def help(ctx):
@@ -39,11 +40,12 @@ def help(ctx):
 @click.option('-c', '--components', help='Components (comma separated)')
 @pass_issue
 def create(issue, summary, project, issue_type, assignee, reporter,
-        priority, labels, estimate, description, fix_versions, duedate,
-        components):
+           priority, labels, estimate, description, fix_versions, duedate,
+           components):
     """Create new issue"""
     LOG.debug("Creating issue %s (components: %s)", summary, components)
     pass
+
 
 @issue.command()
 @click.argument('issue_id')
@@ -60,11 +62,12 @@ def create(issue, summary, project, issue_type, assignee, reporter,
 @click.option('-c', '--components', help='Components (comma separated)')
 @pass_issue
 def modify(issue, summary, project, issue_type, assignee, reporter,
-        priority, labels, estimate, description, fix_versions, duedate,
-        components):
+           priority, labels, estimate, description, fix_versions, duedate,
+           components):
     """Modify existing issue"""
     LOG.debug("Modifying issue %s (components: %s)", summary, components)
     pass
+
 
 @issue.command()
 @click.argument('issue_id')
@@ -75,6 +78,7 @@ def status(issue, issue_id):
 
     pass
 
+
 @issue.command()
 @click.argument('issue_id')
 @pass_issue
@@ -82,13 +86,6 @@ def delete(issue, issue_id):
     """Delete issue"""
     pass
 
-@issue.command()
-@click.argument('issue_id')
-@click.argument('assignee')
-@pass_issue
-def assign(issue, issue_id, assignee):
-    """Assign issue"""
-    pass
 
 @issue.command()
 @click.argument('issue_id')
@@ -97,6 +94,7 @@ def assign(issue, issue_id, assignee):
 def assign(issue, issue_id, assignee):
     """Assign issue"""
     pass
+
 
 @issue.command('list-transitions')
 @click.argument('issue_id')
@@ -104,6 +102,7 @@ def assign(issue, issue_id, assignee):
 def list_transitions(issue, issue_id):
     """List possible transitions"""
     pass
+
 
 @issue.command('transition')
 @click.argument('issue_id')
@@ -113,12 +112,14 @@ def transition(issue, issue_id, state):
     """Transition the issue to another state"""
     pass
 
+
 @issue.command('list-votes')
 @click.argument('issue_id')
 @pass_issue
 def list_votes(issue, issue_id):
     """List issue votes"""
     pass
+
 
 @issue.command()
 @click.argument('issue_id')
@@ -127,12 +128,14 @@ def vote(issue, issue_id):
     """Vote for an issue"""
     pass
 
+
 @issue.command()
 @click.argument('issue_id')
 @pass_issue
 def unvote(issue, issue_id):
     """Unvote an issue"""
     pass
+
 
 @issue.command('create-branch')
 @click.argument('issue_id')
@@ -143,12 +146,10 @@ def create_branch(issue, issue_id, repository, branch):
     """Create an issue branch in repository from existing branch"""
     pass
 
+
 @issue.command('list-branches')
 @click.argument('issue_id')
 @pass_issue
 def list_branches(issue, issue_id):
     """List branches created for this issue"""
     pass
-
-
-
