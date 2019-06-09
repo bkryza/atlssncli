@@ -1,4 +1,5 @@
 *.pyc
+Pipfile.lock
 .DS_Store
 build
 dist
