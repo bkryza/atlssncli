@@ -1,3 +1,19 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright 2019 Bartosz Kryza <bkryza@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import ConfigParser
 import logging as LOG
 from os.path import expanduser, join
@@ -57,6 +73,22 @@ class Config(object):
 
         return self.config.get(service, 'endpoint')
 
+    def get_board(self):
+        """Get active board"""
+
+        return self.config.get('agile', 'board')
+
+    def set_board(self, board_id):
+        """Set default board"""
+
+        self.config.set('agile', 'board', board_id)
+        self.sync()
+
+    def get_sprint_duration(self):
+        """Get active board"""
+
+        return self.config.get('agile', 'sprint_duration')
+
     def get_project(self):
         """Get active project"""
 
@@ -73,6 +105,11 @@ class Config(object):
 
         self.config.set('common', 'active_project', project)
         self.sync()
+
+    def get_repo_plan_ids(self, repo):
+        """Get Bamboo plan ids related to a repository by repository name"""
+
+        return tuple(self.config.get('bamboo', repo).split(','))
 
     def sync(self):
         """Update configuration file"""

@@ -31,7 +31,11 @@ setup(
     ],
     install_requires = [
         'Click',
-        'humanfriendly'
+        'humanfriendly',
+        'six',
+        'decorest',
+        'pygit2',
+        'dateutil'
     ],
     entry_points='''
         [console_scripts]

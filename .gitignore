@@ -1,3 +1,4 @@
+.tox
 *.pyc
 Pipfile.lock
 .DS_Store
@@ -5,4 +6,5 @@ build
 dist
 venv
 atlssncli.egg-info
+config.ini
 

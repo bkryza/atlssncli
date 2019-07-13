@@ -14,22 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+def get(d, default_value, *args):
+    """Return value from a nested dictionary or default_value."""
 
+    value = d
+    try:
+        for arg in args:
+            value = value[arg]
+    except (KeyError, TypeError):
+        return default_value
 
-
-import requests
-import exceptions
-import click
-import logging as LOG
-import json
-from humanfriendly.tables import format_pretty_table
-
-from config import Config
-from commandhandler import CommandHandler
-from querybuilder import QueryBuilder
-
-
-class IssueHandler(CommandHandler):
-
-    def __init__(self):
-        pass
+    return value

@@ -14,22 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from joblib import Memory
 
+memory = Memory("~/.atlssncli/cache", verbose=0)
 
+@memory.cache(ignore=['client'])
+def get_bamboo_plan_shortname(client, plan_id):
+    """Get shortName of a Bamboo plan based on plan_id"""
+    plan = client.get_plan(plan_id)
+    if plan['shortName']:
+        plan_name = plan['shortName']
+    else:
+        plan_name = plan['master']['shortName']
+    return plan_name
 
-import requests
-import exceptions
-import click
-import logging as LOG
-import json
-from humanfriendly.tables import format_pretty_table
-
-from config import Config
-from commandhandler import CommandHandler
-from querybuilder import QueryBuilder
-
-
-class IssueHandler(CommandHandler):
-
-    def __init__(self):
-        pass
+@memory.cache(ignore=['client'])
+def get_bamboo_plan_name(client, plan_id):
+    """Get name of a Bamboo plan based on plan_id"""
+    plan = client.get_plan(plan_id)
+    return plan['name']
