@@ -52,12 +52,10 @@ Command reference
 info - service information
 --------------------------
 
-Show information about configured Atlassian services:
-
-.. code-block:: python
+Show information about JIRA service::
     atlssn info jira
 
-.. code-block:: python
+Show information about Bamboo service::
     atlssn info bamboo
 
 project - manage projects
@@ -65,44 +63,41 @@ project - manage projects
 
 Manage projects in the Jira and Bamboo services.
 
-List all available projects:
-.. code-block:: python
+List all available projects::
     atlssn project list
 
-Select currently active project:
-.. code-block:: python
+Select currently active project::
     atlssn project select <project_key>
 
-Get information about specific project:
-.. code-block:: python
+Get information about specific project::
     atlssn project info <project_key>
 
-List project components:
-.. code-block:: python
+List project components::
     atlssn project list-components <project_key>
 
-List project issue types:
-.. code-block:: python
+List project issue types::
     atlssn project list-issue-types <project_key>
 
 sprint - manage sprints
 -----------------------
 
-List all sprints or sprints in a given state:
-.. code-block:: python
+List all sprints or sprints in a given state::
     atlssn sprint list <--active|--future|--close>
 
-Rename sprint:
-.. code-block:: python
+Rename sprint::
     atlssn sprint rename <sprint_id> <new_name>
 
-Get sprint status:
-.. code-block:: python
+Get sprint status::
     atlssn sprint status <sprint_id>
 
-List sprint issues:
-.. code-block:: python
+List sprint issues::
     atlssn sprint issues <sprint_id>
+
+List sprint issues by assignee::
+    atlssn sprint issues <sprint_id> --assignee johndoe
+
+List sprint issues by status::
+    atlssn sprint issues <sprint_id> --resolved --closed
 
 License
 =======

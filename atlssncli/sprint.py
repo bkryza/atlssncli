@@ -172,10 +172,19 @@ def list(sprint, board_id, active, closed, future):
 
 @sprint.command()
 @click.argument('sprint_id', required=True)
+@click.option('--open', 'opened', is_flag=True, help='Include open tickets',
+              default=False)
+@click.option('--closed', is_flag=True, help='Include closed tickets',
+              default=False)
+@click.option('--in-progress', 'in_progress', is_flag=True, help='Include in progress tickets',
+              default=False)
+@click.option('--resolved', is_flag=True, help='Include resolved tickets',
+              default=False)
 @click.option('--assignee', help='Specify assignee username')
 @click.option('--jql', help='Specify custom JQL query to fileter results')
 @pass_sprint
-def issues(sprint, sprint_id, assignee, jql):
+def issues(sprint, sprint_id, assignee, opened, in_progress, closed, resolved,
+           jql):
     """
     List issues for sprint.
     """
@@ -184,7 +193,8 @@ def issues(sprint, sprint_id, assignee, jql):
 
     try:
         handler = SprintHandler(sprint.get_config())
-        handler.get_sprint_issues(sprint_id, assignee, jql)
+        handler.get_sprint_issues(
+            sprint_id, assignee, opened, in_progress, closed, resolved, jql)
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Listing sprint issues failed")

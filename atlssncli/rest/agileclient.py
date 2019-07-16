@@ -76,7 +76,7 @@ class AgileClient(RestClient):
     @content('application/json')
     @accept('application/json')
     # @on(200, lambda r: (r.json()['total'] < r.json()['maxResults'], r.json()['issues']))
-    @on(200, lambda r: r)
+    @on(200, lambda r: r.json())
     def get_sprint_issues(self, sprint_id, jql, start_at=0, max_results=500):
         """Get sprint status"""
 

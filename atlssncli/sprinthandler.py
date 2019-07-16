@@ -131,12 +131,37 @@ class SprintHandler(CommandHandler):
 
         self._render_sprint_list([res])
 
-    def get_sprint_issues(self, sprint_id, assignee, jql):
+    def get_sprint_issues(self, sprint_id, assignee, status_open,
+                          status_in_progress, status_closed, status_resolved,
+                          jql):
         """Get sprint issues."""
         LOG.debug('Getting sprint %s issues', sprint_id)
 
+        query = []
+        query_str = ""
+
+        if status_open:
+            query.append("Open")
+
+        if status_in_progress:
+            query.append("'In progress'")
+
+        if status_closed:
+            query.append("Closed")
+
+        if status_resolved:
+            query.append("Resolved")
+
+        if query:
+            query_str = "status in (" + ','.join(query) + ")"
+
         if assignee:
-            jql = "assignee={}".format(assignee, )
+            if query:
+                query_str += " AND "
+            query_str += "assignee={}".format(assignee, )
+
+        if not jql:
+            jql = query_str
 
         is_last = False
         start_at = 0
@@ -144,8 +169,10 @@ class SprintHandler(CommandHandler):
         while not is_last:
             chunk = self.client.get_sprint_issues(sprint_id, jql,
                                                   start_at, 50)
-            res.extend(chunk['values'])
-            start_at += len(chunk)
+
+            res.extend(chunk['issues'])
+            start_at += len(chunk['issues'])
+            is_last = chunk['total'] == len(res)
 
         self._render_sprint_issues(res)
 
