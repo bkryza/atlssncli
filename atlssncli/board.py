@@ -27,28 +27,17 @@ pass_board = click.make_pass_decorator(Board)
 # BOARD GROUP
 #
 
-# atlssn board select 7
-# atlssn board list
-# atlssn board status
-# atlssn board backlog
-# atlssn board backlog --board 5
-# atlssn board create "My board" --type scrum
-# atlssn board create "My board" --type kanban --filter 123 --project 321
-# atlssn board delete 7
-# atlssn board 
-
-
 @click.group()
 @click.pass_context
 def board(ctx):
-    """Board management"""
+    """Board management."""
     ctx.obj = Board(ctx.obj['CONFIG'])
 
 
 @board.command()
 @click.pass_context
 def help(ctx):
-    """Print board command help"""
+    """Print board command help."""
     click.echo(ctx.parent.get_help())
 
 
@@ -62,11 +51,11 @@ def select(board, board_id):
     After this operation, all board commands will by default be
     executed against this board.
     """
-
     LOG.debug("Setting default %s", board_id)
 
     try:
         board.get_config().set_board(board_id)
+        click.echo("Active board: %s" % (board_id))
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Set default board failed")
@@ -80,8 +69,7 @@ def select(board, board_id):
 @pass_board
 def list(board, scrum, kanban):
     """Get board list."""
-
-    LOG.debug("Getting board list")
+    LOG.debug("Getting board list.")
 
     try:
         handler = BoardHandler(board.get_config())
@@ -107,7 +95,6 @@ def status(board, board_id):
 
     If no board id is provided, active board from config.ini will be used.
     """
-
     LOG.debug("Getting board status %s", board_id)
 
     try:
@@ -119,21 +106,37 @@ def status(board, board_id):
 
 
 @board.command()
-@click.argument('jql', required=False)
-@click.option('-b', '--board', 'board_id')
+@click.argument('board_id', required=False)
+@click.option('-a', '--assignee', help='Specify assignee username.')
+@click.option('-q', '--jql', help='JQL query.', required=False)
 @pass_board
-def backlog(board, board_id, jql):
+def backlog(board, board_id, assignee, jql):
     """
     Get board backlog.
 
     If no board id is provided, active board from config.ini will be used.
     """
-
     LOG.debug("Getting board status %s", board_id)
 
     try:
         handler = BoardHandler(board.get_config())
-        handler.get_board_backlog(board_id, jql)
+        handler.get_board_backlog(board_id, assignee, jql)
+    except Exception:
+        traceback.print_exc()
+        raise click.ClickException("Get board status failed")
+
+
+@board.command()
+@click.argument('board_id', required=False)
+@click.option('-r', '--released', is_flag=True, help='List only release versions.')
+@pass_board
+def version(board, board_id, released):
+    """Get release versions associated with the board."""
+    LOG.debug("Getting board versions %s", board_id)
+
+    try:
+        handler = BoardHandler(board.get_config())
+        handler.get_board_versions(board_id, released)
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Get board status failed")

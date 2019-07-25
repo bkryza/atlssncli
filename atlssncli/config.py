@@ -92,11 +92,7 @@ class Config(object):
     def get_project(self):
         """Get active project"""
 
-        active_project = None
-        try:
-            active_project = self.config.get('common', 'active_project')
-        except Exception as e:
-            pass
+        active_project = self.config.get('common', 'active_project')
 
         return active_project
 

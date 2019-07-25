@@ -39,6 +39,13 @@ class ProjectHandler(CommandHandler):
     def get_project_components(self, project):
         """Show project components.
         """
+        if not project:
+            project = self.config.get_project()
+
+        if not project:
+            LOG.error('No project specified')
+            raise 'No project specified'
+
         LOG.debug('Getting project components: %s', project)
 
         res = self.client.get_project(project)
@@ -56,6 +63,13 @@ class ProjectHandler(CommandHandler):
     def get_project_issue_types(self, project):
         """Show project issue types.
         """
+        if not project:
+            project = self.config.get_project()
+
+        if not project:
+            LOG.error('No project specified')
+            raise 'No project specified'
+
         LOG.debug('Getting project issue types: %s', project)
 
         res = self.client.get_project(project)
@@ -73,6 +87,13 @@ class ProjectHandler(CommandHandler):
     def get_project_details(self, project):
         """Show basic information about the project.
         """
+        if not project:
+            project = self.config.get_project()
+
+        if not project:
+            LOG.error('No project specified')
+            raise 'No project specified'
+
         LOG.debug('Getting project information: %s', project)
 
         res = self.client.get_project(project)

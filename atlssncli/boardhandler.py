@@ -60,16 +60,34 @@ class BoardHandler(CommandHandler):
 
         self._render_board_list([res])
 
-    def get_board_backlog(self, board_id, jql):
+    def get_board_backlog(self, board_id, assignee, jql):
         """Show board status."""
-        LOG.debug('Getting board list')
+        LOG.debug('Getting board backlog: %s', board_id)
+
+        if assignee and jql:
+            raise 'Specifying assignee and JQL together doesn\'t make sense'
 
         if not board_id:
             board_id = self.config.get_board()
 
+        if assignee:
+            jql = "assignee={}".format(assignee, )
+
         res = self.client.get_board_backlog(board_id, jql)
 
         self._render_board_backlog(res)
+
+    def get_board_versions(self, board_id, released):
+        """List board release versions."""
+        LOG.debug('Getting board release versions: %s', board_id)
+
+        if not board_id:
+            board_id = self.config.get_board()
+
+        is_last, versions = \
+            self.client.get_board_versions(board_id, released)
+
+        self._render_board_versions(versions)
 
     def _render_board_list(self, boards):
         """Render board list."""
@@ -95,5 +113,21 @@ class BoardHandler(CommandHandler):
                  util.get(i, '-', 'fields', 'summary'),
                  util.get(i, '-', 'fields', 'reporter', 'name'),
                  util.get(i, '-', 'fields', 'assignee', 'name')])
+
+        click.echo(format_pretty_table(values, column_names))
+
+    def _render_board_versions(self, versions):
+        """Render board release versions."""
+
+        LOG.debug("Rendering board versions %s", str(versions))
+
+        column_names = ['ID', 'Project ID', 'Name', 'Description']
+        values = []
+        for i in versions:
+            values.append(
+                [str(i['id']),
+                 str(i['projectId']),
+                 str(i['name']),
+                 str(i.get('description', '-'))])
 
         click.echo(format_pretty_table(values, column_names))

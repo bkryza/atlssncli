@@ -54,7 +54,7 @@ def list(project):
 
 
 @project.command()
-@click.argument('project_id', 'Project id or key.')
+@click.argument('project_id', 'Project id or key.', required=False)
 @pass_project
 def info(project, project_id):
     """Get project details"""
@@ -66,7 +66,7 @@ def info(project, project_id):
 
 
 @project.command('list-components')
-@click.argument('project_id', 'Project id or key.')
+@click.argument('project_id', 'Project id or key.', required=False)
 @pass_project
 def list_components(project, project_id):
     """List project components"""
@@ -78,7 +78,7 @@ def list_components(project, project_id):
 
 
 @project.command('list-issue-types')
-@click.argument('project_id', 'Project id or key.')
+@click.argument('project_id', 'Project id or key.', required=False)
 @pass_project
 def list_issue_types(project, project_id):
     """List project issue types"""

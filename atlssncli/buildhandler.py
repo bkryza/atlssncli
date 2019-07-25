@@ -254,4 +254,3 @@ class BuildHandler(CommandHandler):
                             result['buildState']])
 
         click.echo(format_pretty_table(results, column_names))
-

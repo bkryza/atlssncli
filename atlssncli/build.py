@@ -37,7 +37,7 @@ def build(ctx):
 @build.command()
 @click.pass_context
 def help(ctx):
-    """Print build command help"""
+    """Print build command help."""
     click.echo(ctx.parent.get_help())
 
 
@@ -45,7 +45,7 @@ def help(ctx):
 @click.argument('plan_id')
 @pass_build
 def run(build, plan_id):
-    """Add plan to build queue"""
+    """Add plan to build queue."""
     LOG.debug("Adding plan to build queue %s", plan_id)
     try:
         handler = BuildHandler(build.get_config())
@@ -75,7 +75,7 @@ def enable(build, plan_id, branch):
 @click.option('-b', '--branch', help='Branch name')
 @pass_build
 def disable(build, plan_id, branch):
-    """Disable branch for plan"""
+    """Disable branch for plan."""
     LOG.debug("Disabling branch %s for plan %s", branch, plan_id)
     try:
         handler = BuildHandler(build.get_config())
@@ -90,7 +90,7 @@ def disable(build, plan_id, branch):
 @click.option('-b', '--branch', help='Branch name')
 @pass_build
 def status(build, plan_id, branch):
-    """Get plan status"""
+    """Get plan status."""
     LOG.debug("Getting plan status %s", plan_id)
 
     try:
@@ -104,7 +104,7 @@ def status(build, plan_id, branch):
 @build.command()
 @pass_build
 def queue(build):
-    """Get current build queue"""
+    """Get current build queue."""
     try:
         handler = BuildHandler(build.get_config())
         handler.get_build_queue()
@@ -117,7 +117,7 @@ def queue(build):
 @click.argument('plan_id', required=False, nargs=1)
 @pass_build
 def list_branches(build, plan_id):
-    """List branches for build plan"""
+    """List branches for build plan."""
     LOG.debug("Getting plan branches %s", plan_id)
 
     try:
@@ -131,7 +131,7 @@ def list_branches(build, plan_id):
 @click.argument('plan_id', required=False, nargs=1)
 @pass_build
 def list_artifacts(build, plan_id):
-    """List artifacts for build plan"""
+    """List artifacts for build plan."""
     LOG.debug("Getting plan artifacts %s", plan_id)
 
     try:
@@ -143,10 +143,11 @@ def list_artifacts(build, plan_id):
 
 @build.command('results')
 @click.argument('issue_id', required=False, nargs=1)
-@click.option('-f', '--favourite', help='Only favourite plans', default=False, is_flag=True)
+@click.option('-f', '--favourite', help='Only favourite plans.', default=False,
+              is_flag=True)
 @pass_build
 def get_results(build, issue_id, favourite):
-    """Get build results"""
+    """Get build results."""
     LOG.debug("Getting build results for issue %s", issue_id)
 
     try:

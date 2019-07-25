@@ -63,13 +63,13 @@ class SprintHandler(CommandHandler):
 
     def get_sprint_list(self, board_id=None, state='active,closed,future'):
         """Show sprint list."""
-        LOG.debug('Getting sprint list for board: %s', board_id)
-
         if not board_id:
             board_id = self.config.get_board()
             if not board_id:
                 LOG.error('Cannot list sprints without board id')
                 raise 'Cannot list sprints without board id'
+
+        LOG.debug('Getting sprint list for board: %s', board_id)
 
         is_last = False
         start_at = 0
@@ -82,8 +82,43 @@ class SprintHandler(CommandHandler):
 
         self._render_sprint_list(res)
 
+    def create_sprint(self, board_id, name, start_date, duration):
+        """Create new sprint."""
+        if not board_id:
+            board_id = self.config.get_board()
+            if not board_id:
+                LOG.error('Cannot create sprint without board id')
+                raise 'Cannot create sprint without id'
+
+        LOG.debug('Creating sprint on board: %s', board_id)
+
+        sprint = {}
+        if name:
+            sprint['name'] = name
+
+        if not start_date or start_date == 'now':
+            start_date = datetime.now()
+
+        if not duration:
+            duration = self.config.get_sprint_duration()
+
+        end_date = start_date + timedelta(days=int(duration))
+
+        sprint['startDate'] = start_date
+        sprint['endDate'] = end_date
+
+        res = self.client.create_sprint(board_id, sprint)
+
+        self._render_sprint_list([res])
+
+    def delete_sprint(self, sprint_id):
+        """Delete sprint."""
+        LOG.debug('Deleting sprint: %s', sprint_id)
+
+        self.client.delete_sprint(sprint_id)
+
     def rename_sprint(self, sprint_id, name):
-        """Renames selected sprint."""
+        """Rename selected sprint."""
 
         LOG.debug('Renaming sprint %s to %s', sprint_id, name)
 
@@ -119,10 +154,10 @@ class SprintHandler(CommandHandler):
 
         self._render_sprint_list([res])
 
-    def stop_sprint(self, sprint_id):
-        """Stop selected sprint."""
+    def close_sprint(self, sprint_id):
+        """Close selected sprint."""
 
-        LOG.debug('Stopping sprint %s', sprint_id)
+        LOG.debug('Closing sprint %s', sprint_id)
 
         sprint = {}
         sprint['state'] = 'closed'

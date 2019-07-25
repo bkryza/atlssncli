@@ -15,8 +15,8 @@ atlssncli
 
 Simple command-line client unifying access to Atlassian_ ® services.
 
-.. role:: py(code)
-   :language: python
+.. role:: bash(code)
+   :language: bash
 
 
 .. contents::
@@ -58,6 +58,12 @@ Show information about JIRA service::
 Show information about Bamboo service::
     atlssn info bamboo
 
+agent - Bamboo agents information
+----------------------------------
+
+Show information about Bamboo agents::
+    atlssn agent list
+
 project - manage projects
 -------------------------
 
@@ -67,16 +73,31 @@ List all available projects::
     atlssn project list
 
 Select currently active project::
-    atlssn project select <project_key>
+    atlssn project select [<project_key>]
 
 Get information about specific project::
-    atlssn project info <project_key>
+    atlssn project info [<project_key>]
 
 List project components::
-    atlssn project list-components <project_key>
+    atlssn project list-components [<project_key>]
 
 List project issue types::
-    atlssn project list-issue-types <project_key>
+    atlssn project list-issue-types [<project_key>]
+
+board - manage Jira boards
+--------------------------
+
+Get board backlog::
+    atlssn board backlog [-a|--assignee <user_id>] [-q|--jql <jql_query>]
+
+Get board list::
+    atlssn board list
+
+Set default board::
+    atlssn board select <board_id>
+
+Get board status::
+    atlssn board status [<board_id>]
 
 sprint - manage sprints
 -----------------------
@@ -84,8 +105,17 @@ sprint - manage sprints
 List all sprints or sprints in a given state::
     atlssn sprint list <--active|--future|--close>
 
+Create sprint::
+    atlssn sprint create <sprint_id>
+
 Rename sprint::
     atlssn sprint rename <sprint_id> <new_name>
+
+Start sprint::
+    atlssn sprint start <sprint_id> [<start_date> [<duration>]]
+
+Stop sprint::
+    atlssn sprint stop <sprint_id>
 
 Get sprint status::
     atlssn sprint status <sprint_id>

@@ -27,9 +27,6 @@ pass_sprint = click.make_pass_decorator(Sprint)
 # SPRINT GROUP
 #
 
-# attlsn board list
-# attlsn board select 7
-# attlsn board backlog
 # attlsn sprint list
 # attlsn sprint list active,closed
 # attlsn sprint status
@@ -78,6 +75,29 @@ def status(sprint, sprint_id):
 
 
 @sprint.command()
+@click.argument('board_id', required=False)
+@click.option('-n', '--name', required=False)
+@click.option('-s', '--start-date', 'start_date', required=False)
+@click.option('-d', '--duration', required=False)
+@pass_sprint
+def create(sprint, board_id, name, start_date, duration):
+    """
+    Create new sprint.
+
+    If no board id is provided, it will be taken from the config.ini.
+    """
+
+    LOG.debug("Creating new sprint on board %s", board_id)
+
+    try:
+        handler = SprintHandler(sprint.get_config())
+        handler.create_sprint(board_id, name, start_date, duration)
+    except Exception:
+        traceback.print_exc()
+        raise click.ClickException("Creating sprint failed")
+
+
+@sprint.command()
 @click.argument('sprint_id')
 @click.argument('name')
 @pass_sprint
@@ -96,8 +116,8 @@ def rename(sprint, sprint_id, name):
 
 @sprint.command()
 @click.argument('sprint_id')
-@click.argument('start_date', required=False)
-@click.argument('duration', required=False)
+@click.option('-s', '--start-date', 'start_date', required=False)
+@click.option('-d', '--duration', required=False)
 @pass_sprint
 def start(sprint, sprint_id, start_date, duration):
     """
@@ -123,26 +143,26 @@ def start(sprint, sprint_id, start_date, duration):
 @sprint.command()
 @click.argument('sprint_id')
 @pass_sprint
-def stop(sprint, sprint_id):
-    """Stop specific sprint."""
+def close(sprint, sprint_id):
+    """Close specific sprint."""
 
-    LOG.debug("Renaming sprint %s", sprint_id)
+    LOG.debug("Closing sprint %s", sprint_id)
 
     try:
         handler = SprintHandler(sprint.get_config())
-        handler.stop_sprint(sprint_id)
+        handler.close_sprint(sprint_id)
     except Exception:
         traceback.print_exc()
-        raise click.ClickException("Sprint stop failed")
+        raise click.ClickException("Sprint closing failed")
 
 
 @sprint.command()
 @click.argument('board_id', required=False)
-@click.option('--active', is_flag=True, help='Include active sprints',
+@click.option('-a', '--active', is_flag=True, help='Include active sprints',
               default=False)
-@click.option('--closed', is_flag=True, help='Include closed sprints',
+@click.option('-c', '--closed', is_flag=True, help='Include closed sprints',
               default=False)
-@click.option('--future', is_flag=True, help='Include future sprints',
+@click.option('-f', '--future', is_flag=True, help='Include future sprints',
               default=False)
 @pass_sprint
 def list(sprint, board_id, active, closed, future):
@@ -172,16 +192,16 @@ def list(sprint, board_id, active, closed, future):
 
 @sprint.command()
 @click.argument('sprint_id', required=True)
-@click.option('--open', 'opened', is_flag=True, help='Include open tickets',
+@click.option('-o', '--open', 'opened', is_flag=True,
+              help='Include open tickets', default=False)
+@click.option('-c', '--closed', is_flag=True, help='Include closed tickets',
               default=False)
-@click.option('--closed', is_flag=True, help='Include closed tickets',
+@click.option('-p', '--in-progress', 'in_progress', is_flag=True,
+              help='Include in progress tickets', default=False)
+@click.option('-r', '--resolved', is_flag=True, help='Include resolved tickets',
               default=False)
-@click.option('--in-progress', 'in_progress', is_flag=True, help='Include in progress tickets',
-              default=False)
-@click.option('--resolved', is_flag=True, help='Include resolved tickets',
-              default=False)
-@click.option('--assignee', help='Specify assignee username')
-@click.option('--jql', help='Specify custom JQL query to fileter results')
+@click.option('-a', '--assignee', help='Specify assignee username')
+@click.option('-q', '--jql', help='Specify custom JQL query to fileter results')
 @pass_sprint
 def issues(sprint, sprint_id, assignee, opened, in_progress, closed, resolved,
            jql):
