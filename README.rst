@@ -99,6 +99,9 @@ Set default board::
 Get board status::
     atlssn board status [<board_id>]
 
+Get board release versions::
+    atlssn board version [-r|--released]
+
 sprint - manage sprints
 -----------------------
 
