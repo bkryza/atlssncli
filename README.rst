@@ -63,7 +63,7 @@ agent - Bamboo agents information
 
 Show information about Bamboo agents::
     atlssn agent list
-
+    
 project - manage projects
 -------------------------
 
@@ -92,15 +92,12 @@ Get board backlog::
 
 Get board list::
     atlssn board list
-
+        
 Set default board::
     atlssn board select <board_id>
 
 Get board status::
     atlssn board status [<board_id>]
-
-Get board release versions::
-    atlssn board version [-r|--released]
 
 sprint - manage sprints
 -----------------------
@@ -109,7 +106,7 @@ List all sprints or sprints in a given state::
     atlssn sprint list <--active|--future|--close>
 
 Create sprint::
-    atlssn sprint create <sprint_id>
+    atlssn sprint create [-n|--name <name>] [-s|--start-data YYYY-MM-DD] [-d|--duration <days>]
 
 Rename sprint::
     atlssn sprint rename <sprint_id> <new_name>
@@ -131,6 +128,13 @@ List sprint issues by assignee::
 
 List sprint issues by status::
     atlssn sprint issues <sprint_id> --resolved --closed
+
+TODO
+====
+
+* Refactor output formatting to enable custom formatters
+* 
+* Move todo's to GitHub issues
 
 License
 =======

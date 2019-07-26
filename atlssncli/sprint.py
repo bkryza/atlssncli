@@ -27,20 +27,6 @@ pass_sprint = click.make_pass_decorator(Sprint)
 # SPRINT GROUP
 #
 
-# attlsn sprint list
-# attlsn sprint list active,closed
-# attlsn sprint status
-# attlsn sprint status 123
-# attlsn sprint start 123
-# attlsn sprint close
-# attlsn sprint create "Sprint 123"
-# attlsn sprint rename 123 "Sprint 123 Renamed"
-# attlsn sprint issues
-# attlsn sprint issues --mine
-# attlsn sprint issues --assignee plgkryza
-# attlsn sprint issues --reporter bkryza
-
-
 @click.group()
 @click.pass_context
 def sprint(ctx):
@@ -99,6 +85,23 @@ def create(sprint, board_id, name, start_date, duration):
 
 @sprint.command()
 @click.argument('sprint_id')
+@pass_sprint
+def delete(sprint, sprint_id):
+    """Delete specific sprint."""
+
+    LOG.debug("Deleting sprint %s", sprint_id)
+
+    try:
+        handler = SprintHandler(sprint.get_config())
+        handler.delete_sprint(sprint_id)
+        click.echo("Sprint {} deleted successfully".format(sprint_id,))
+    except Exception:
+        traceback.print_exc()
+        raise click.ClickException("Sprint delete failed")
+
+
+@sprint.command()
+@click.argument('sprint_id', required=False)
 @click.argument('name')
 @pass_sprint
 def rename(sprint, sprint_id, name):
@@ -141,7 +144,7 @@ def start(sprint, sprint_id, start_date, duration):
 
 
 @sprint.command()
-@click.argument('sprint_id')
+@click.argument('sprint_id', required=False)
 @pass_sprint
 def close(sprint, sprint_id):
     """Close specific sprint."""
@@ -191,7 +194,7 @@ def list(sprint, board_id, active, closed, future):
 
 
 @sprint.command()
-@click.argument('sprint_id', required=True)
+@click.argument('sprint_id', required=False)
 @click.option('-o', '--open', 'opened', is_flag=True,
               help='Include open tickets', default=False)
 @click.option('-c', '--closed', is_flag=True, help='Include closed tickets',

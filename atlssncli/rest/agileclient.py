@@ -81,7 +81,7 @@ class AgileClient(RestClient):
     @content('application/json')
     @accept('application/json')
     @body('sprint', lambda s: json.dumps(s))
-    @on(200, lambda r: r.json())
+    @on(201, lambda r: r.json())
     def create_sprint(self, sprint):
         """Create sprint."""
 
