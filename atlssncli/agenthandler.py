@@ -15,20 +15,17 @@
 # limitations under the License.
 
 import requests
-import exceptions
 import click
 import logging as LOG
 import json
-import gitcontext
 from datetime import datetime, timedelta
-from humanfriendly.tables import format_pretty_table
-
-from config import Config
-from commandhandler import CommandHandler
-from rest.bambooclient import BambooClient
-from requests.auth import HTTPBasicAuth
 from dateutil.parser import parse
-import cached
+from humanfriendly.tables import format_pretty_table
+from requests.auth import HTTPBasicAuth
+
+from .config import Config
+from .commandhandler import CommandHandler
+from .rest.bambooclient import BambooClient
 
 
 class AgentHandler(CommandHandler):

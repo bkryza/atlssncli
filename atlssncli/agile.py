@@ -15,8 +15,8 @@
 # limitations under the License.
 
 import click
-from commandgroup import Agile
 
+from .commandgroup import Agile
 
 pass_agile = click.make_pass_decorator(Agile)
 

@@ -18,29 +18,26 @@ import os
 import sys
 import posixpath
 import requests
-import exceptions
 import click
 import logging as LOG
 import json
 
-from config import Config
-from issuehandler import IssueHandler
-from commandgroup import *
-from docs import docs
-from sprint import sprint
-from build import build
-from git import git
-from issue import issue
-from project import project
-from info import info
-from agent import agent
-from board import board
+from .config import Config
+from .docs import docs
+from .sprint import sprint
+from .build import build
+from .git import git
+from .issue import issue
+from .project import project
+from .info import info
+from .agent import agent
+from .board import board
+from .issuehandler import IssueHandler
+from .commandgroup import *
 from . import __version__
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-
-pass_issue = click.make_pass_decorator(Issue)
 
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
 @click.option('-v', '--verbose', count=True, help="Enable verbose output")
@@ -87,12 +84,12 @@ def update_cache(ctx):
 #
 # Add command groups from separate modules
 #
-cli.add_command(project)
-cli.add_command(issue)
-cli.add_command(build)
-cli.add_command(git)
-cli.add_command(sprint)
-cli.add_command(docs)
-cli.add_command(info)
 cli.add_command(agent)
 cli.add_command(board)
+cli.add_command(build)
+cli.add_command(docs)
+cli.add_command(git)
+cli.add_command(info)
+cli.add_command(issue)
+cli.add_command(project)
+cli.add_command(sprint)

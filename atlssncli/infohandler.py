@@ -15,18 +15,17 @@
 # limitations under the License.
 
 import requests
-import exceptions
 import click
 import logging as LOG
 import json
 from humanfriendly.tables import format_pretty_table, format_smart_table
-
-from config import Config
-from commandhandler import CommandHandler
-from querybuilder import QueryBuilder
-from rest.jiraclient import JiraClient
-from rest.bambooclient import BambooClient
 from requests.auth import HTTPBasicAuth
+
+from .config import Config
+from .commandhandler import CommandHandler
+from .querybuilder import QueryBuilder
+from .rest.jiraclient import JiraClient
+from .rest.bambooclient import BambooClient
 
 
 class InfoHandler(CommandHandler):

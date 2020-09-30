@@ -15,7 +15,8 @@
 # limitations under the License.
 
 import click
-from commandgroup import *
+
+from .commandgroup import *
 
 pass_docs = click.make_pass_decorator(Docs)
 

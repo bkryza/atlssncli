@@ -13,11 +13,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.import requests
-
 import logging as LOG
 import json
 
-from decorest import RestClient, GET, content, accept, on
+from decorest import RestClient, GET, POST, PUT, DELETE, body,\
+                     content, accept, query, on
 
 
 class JiraClient(RestClient):
@@ -34,6 +34,23 @@ class JiraClient(RestClient):
     def get_all_projects(self):
         """Get all projects.
         """
+
+    @GET('issue/createmeta')
+    @query('project_id', 'projectKeys')
+    @query('max_results', 'maxResults')
+    @query('start_at', 'startAt')
+    @content('application/json')
+    @accept('application/json')
+    @on(200, lambda r: r.json()['projects'][0]['issuetypes'])
+    def get_issue_types(self, project_id):
+        """Get issue types for project."""
+
+    @GET('resolution')
+    @content('application/json')
+    @accept('application/json')
+    @on(200, lambda r: r.json())
+    def get_resolutions(self):
+        """Get issue resolutions."""
 
     @GET('serverInfo')
     @content('application/json')
@@ -60,7 +77,7 @@ class JiraClient(RestClient):
         # req = self.build_request(['project', project['key']])
         # LOG.debug('REQUEST: PUT %s', req)
         #r = requests.post(req, data=project)
-        # r.raise_for_status()
+            # r.raise_for_status()
         # return r.json()
         return {}
 
@@ -72,11 +89,21 @@ class JiraClient(RestClient):
         """Get project details.
         """
 
-    @GET('project/{issue}')
+    @GET('issue/{issue}')
     @content('application/json')
     @accept('application/json')
     @on(200, lambda r: r.json())
     def get_issue(self, issue):
         """
         Get specific JIRA issue
+        """
+
+    @PUT('issue/{issue}/assignee')
+    @content('application/json')
+    @accept('application/json')
+    @body('data', lambda s: json.dumps(s))
+    @on(200, lambda r: r.json())
+    def assign_issue(self, issue, data):
+        """
+        Assign JIRA issue
         """

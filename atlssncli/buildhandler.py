@@ -14,20 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import requests
-import exceptions
 import click
 import logging as LOG
 import json
-import gitcontext
-from humanfriendly.tables import format_pretty_table
+import requests
 
-from config import Config
-from commandhandler import CommandHandler
-from querybuilder import QueryBuilder
-from rest.bambooclient import BambooClient
+from humanfriendly.tables import format_pretty_table
 from requests.auth import HTTPBasicAuth
-import cached
+
+from .config import Config
+from .commandhandler import CommandHandler
+from .querybuilder import QueryBuilder
+from .rest.bambooclient import BambooClient
 
 
 class BuildHandler(CommandHandler):

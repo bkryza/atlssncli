@@ -15,11 +15,11 @@
 # limitations under the License.
 
 import click
-from commandgroup import *
-from sprinthandler import SprintHandler
 import logging as LOG
 import traceback
 
+from .commandgroup import *
+from .sprinthandler import SprintHandler
 
 pass_sprint = click.make_pass_decorator(Sprint)
 

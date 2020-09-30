@@ -15,17 +15,16 @@
 # limitations under the License.
 
 import requests
-import exceptions
 import click
 import logging as LOG
 import json
 from humanfriendly.tables import format_pretty_table
-
-from config import Config
-from commandhandler import CommandHandler
-from querybuilder import QueryBuilder
-from rest.jiraclient import JiraClient
 from requests.auth import HTTPBasicAuth
+
+from .config import Config
+from .commandhandler import CommandHandler
+from .querybuilder import QueryBuilder
+from .rest.jiraclient import JiraClient
 
 
 class ProjectHandler(CommandHandler):

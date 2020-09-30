@@ -15,7 +15,8 @@
 # limitations under the License.
 
 import click
-from commandgroup import *
+
+from .commandgroup import *
 
 pass_git = click.make_pass_decorator(Git)
 

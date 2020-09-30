@@ -1,6 +1,7 @@
+configparser
 decorest
 six
 Click
 humanfriendly
 pygit2
-dateutil
+python-dateutil

@@ -14,10 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import ConfigParser
+import configparser
 import logging as LOG
 from os.path import expanduser, join
-from sets import Set
 
 HOME_DIR = expanduser("~")
 CONFIG_DIR = join(HOME_DIR, ".atlssncli")
@@ -40,14 +39,14 @@ PLANS_CACHE = join(CACHE_DIR, "_plans")
 USERS_CACHE = join(CACHE_DIR, "_users")
 
 # Required config sections
-REQUIRED_SECTIONS = Set(['common', 'jira', 'bitbucket', 'bamboo'])
+REQUIRED_SECTIONS = set(['common', 'jira', 'bitbucket', 'bamboo'])
 
 
 class Config(object):
 
     def __init__(self, config_path=CONFIG_PATH):
         self.path = config_path
-        self.config = ConfigParser.ConfigParser()
+        self.config = configparser.ConfigParser()
         LOG.debug('Reading configuration from %s', self.path)
         self.config.read(self.path)
         LOG.debug('Got configuration sections: %s',
@@ -56,10 +55,10 @@ class Config(object):
     def validate(self):
         """Validate the config file"""
 
-        if not REQUIRED_SECTIONS.issubset(Set(self.config.sections())):
+        if not REQUIRED_SECTIONS.issubset(set(self.config.sections())):
             raise Exception("Missing required config sections: %s" %
                             (",".join(REQUIRED_SECTIONS.
-                                      difference(Set(self.config.sections())))))
+                                      difference(set(self.config.sections())))))
         return True
 
     def get_auth(self, service=None):

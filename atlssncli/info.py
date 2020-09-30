@@ -16,8 +16,8 @@
 
 import click
 
-from commandgroup import *
-from infohandler import InfoHandler
+from .commandgroup import *
+from .infohandler import InfoHandler
 
 pass_info = click.make_pass_decorator(Info)
 

@@ -30,12 +30,13 @@ setup(
         'Programming Language :: Python',
     ],
     install_requires = [
+        'configparser',
         'Click',
         'humanfriendly',
         'six',
         'decorest',
         'pygit2',
-        'dateutil'
+        'python-dateutil'
     ],
     entry_points='''
         [console_scripts]

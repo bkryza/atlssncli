@@ -15,20 +15,17 @@
 # limitations under the License.
 
 import requests
-import exceptions
 import click
 import logging as LOG
 import json
-import gitcontext
 from datetime import datetime, timedelta
 from humanfriendly.tables import format_pretty_table
-
-from config import Config
-from commandhandler import CommandHandler
-from rest.agileclient import AgileClient
 from requests.auth import HTTPBasicAuth
 from dateutil.parser import parse
-import cached
+
+from .config import Config
+from .commandhandler import CommandHandler
+from .rest.agileclient import AgileClient
 
 
 class SprintHandler(CommandHandler):
@@ -37,7 +34,6 @@ class SprintHandler(CommandHandler):
         super(SprintHandler, self).__init__(config)
         self.client = AgileClient(config.get_endpoint('agile'))
         self.client._set_auth(HTTPBasicAuth(*config.get_auth()))
-        pass
 
     def get_sprint_status(self, sprint_id):
         """Show sprint status."""

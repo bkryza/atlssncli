@@ -17,8 +17,11 @@
 import click
 import logging as LOG
 
-from commandgroup import *
-from projecthandler import ProjectHandler
+import traceback
+
+from .commandgroup import *
+from .projecthandler import ProjectHandler
+from .issuehandler import IssueHandler
 
 pass_issue = click.make_pass_decorator(Issue)
 
@@ -39,6 +42,21 @@ def issue(ctx):
 def help(ctx):
     """Print issue command help"""
     click.echo(ctx.parent.get_help())
+
+
+@issue.command()
+@click.argument('project_id', required=False)
+@pass_issue
+def types(issue, project_id):
+    """List issue types for project."""
+    LOG.debug("Listing project issue types %s", project_id)
+
+    try:
+        handler = IssueHandler(issue.get_config())
+        handler.get_issue_types(project_id)
+    except Exception:
+        traceback.print_exc()
+        raise click.ClickException("Getting project issue types failed")
 
 
 @issue.command()
@@ -77,10 +95,10 @@ def create(issue, summary, project, issue_type, assignee, reporter,
 @click.option('-u', '--duedate', help='Due date')
 @click.option('-c', '--components', help='Components (comma separated)')
 @pass_issue
-def modify(issue, summary, project, issue_type, assignee, reporter,
+def edit(issue, summary, project, issue_type, assignee, reporter,
            priority, labels, estimate, description, fix_versions, duedate,
            components):
-    """Modify existing issue"""
+    """Edit existing issue."""
     LOG.debug("Modifying issue %s (components: %s)", summary, components)
     pass
 
@@ -89,10 +107,15 @@ def modify(issue, summary, project, issue_type, assignee, reporter,
 @click.argument('issue_id')
 @pass_issue
 def status(issue, issue_id):
-    """Get issue status"""
-    LOG.debug("Getting issue details %s", issue)
+    """Get issue"""
+    LOG.debug("Get issue %s", issue_id)
 
-    pass
+    try:
+        handler = IssueHandler(issue.get_config())
+        handler.get_issue(issue_id)
+    except Exception:
+        traceback.print_exc()
+        raise click.ClickException("Getting issue failed")
 
 
 @issue.command()
@@ -109,13 +132,22 @@ def delete(issue, issue_id):
 @pass_issue
 def assign(issue, issue_id, assignee):
     """Assign issue"""
-    pass
+    LOG.debug("Assign issue %s to %s", issue_id, assignee)
+
+    try:
+        handler = IssueHandler(issue.get_config())
+        handler.assign_issue(issue_id, assignee)
+        click.echo('Assigned {} issue to {}'.format(
+            issue_id, assignee))
+    except Exception:
+        traceback.print_exc()
+        raise click.ClickException("Assigning issue failed")
 
 
 @issue.command('list-transitions')
 @click.argument('issue_id')
 @pass_issue
-def list_transitions(issue, issue_id):
+def transitions(issue, issue_id):
     """List possible transitions"""
     pass
 
@@ -153,19 +185,19 @@ def unvote(issue, issue_id):
     pass
 
 
-@issue.command('create-branch')
+@issue.command('branch')
 @click.argument('issue_id')
 @click.argument('repository')
 @click.argument('branch')
 @pass_issue
-def create_branch(issue, issue_id, repository, branch):
+def branch(issue, issue_id, repository, branch):
     """Create an issue branch in repository from existing branch"""
     pass
 
 
-@issue.command('list-branches')
+@issue.command('branches')
 @click.argument('issue_id')
 @pass_issue
-def list_branches(issue, issue_id):
+def branches(issue, issue_id):
     """List branches created for this issue"""
     pass

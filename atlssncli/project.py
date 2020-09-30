@@ -15,18 +15,17 @@
 # limitations under the License.
 
 import click
-import pdb
+# import pdb
 import sys
 
-from commandgroup import *
-from projecthandler import ProjectHandler
+from .commandgroup import Project
+from .projecthandler import ProjectHandler
 
 pass_project = click.make_pass_decorator(Project)
 
 #
 # PROJECT GROUP
 #
-
 
 @click.group()
 @click.pass_context
@@ -54,7 +53,7 @@ def list(project):
 
 
 @project.command()
-@click.argument('project_id', 'Project id or key.', required=False)
+@click.argument('project_id', required=False)
 @pass_project
 def info(project, project_id):
     """Get project details"""
@@ -66,7 +65,7 @@ def info(project, project_id):
 
 
 @project.command('list-components')
-@click.argument('project_id', 'Project id or key.', required=False)
+@click.argument('project_id', required=False)
 @pass_project
 def list_components(project, project_id):
     """List project components"""
@@ -78,7 +77,7 @@ def list_components(project, project_id):
 
 
 @project.command('list-issue-types')
-@click.argument('project_id', 'Project id or key.', required=False)
+@click.argument('project_id', required=False)
 @pass_project
 def list_issue_types(project, project_id):
     """List project issue types"""
@@ -101,4 +100,4 @@ def select(project, project_id):
         handler = ProjectHandler(project.get_config())
         handler.select_project(project_id)
     except Exception as e:
-        raise click.ClickException(e)
+        raise click.ClickException(e.message)

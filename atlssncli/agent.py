@@ -15,11 +15,11 @@
 # limitations under the License.
 
 import click
-from commandgroup import Agent
-from agenthandler import AgentHandler
 import logging as LOG
 import traceback
 
+from .commandgroup import Agent
+from .agenthandler import AgentHandler
 
 pass_agent = click.make_pass_decorator(Agent)
 

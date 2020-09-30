@@ -15,11 +15,11 @@
 # limitations under the License.
 
 import click
-from commandgroup import *
-from buildhandler import BuildHandler
 import logging as LOG
 import traceback
 
+from .commandgroup import *
+from .buildhandler import BuildHandler
 
 pass_build = click.make_pass_decorator(Build)
 

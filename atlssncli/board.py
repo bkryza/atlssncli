@@ -15,11 +15,11 @@
 # limitations under the License.
 
 import click
-from commandgroup import Board
-from boardhandler import BoardHandler
 import logging as LOG
 import traceback
 
+from .commandgroup import Board
+from .boardhandler import BoardHandler
 
 pass_board = click.make_pass_decorator(Board)
 
@@ -30,7 +30,7 @@ pass_board = click.make_pass_decorator(Board)
 @click.group()
 @click.pass_context
 def board(ctx):
-    """Board management."""
+    """Board management"""
     ctx.obj = Board(ctx.obj['CONFIG'])
 
 

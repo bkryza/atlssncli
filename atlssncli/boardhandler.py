@@ -14,23 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import requests
-import exceptions
 import click
 import logging as LOG
 import json
-import gitcontext
+import requests
 from datetime import datetime, timedelta
 from humanfriendly.tables import format_pretty_table
-
-import util
-
-from config import Config
-from commandhandler import CommandHandler
-from rest.agileclient import AgileClient
 from requests.auth import HTTPBasicAuth
 from dateutil.parser import parse
-import cached
+
+from .config import Config
+from .commandhandler import CommandHandler
+from .rest.agileclient import AgileClient
 
 
 class BoardHandler(CommandHandler):
