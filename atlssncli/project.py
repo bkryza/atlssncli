@@ -15,7 +15,6 @@
 # limitations under the License.
 
 import click
-# import pdb
 import sys
 
 from .commandgroup import Project

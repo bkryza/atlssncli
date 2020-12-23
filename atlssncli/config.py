@@ -110,5 +110,5 @@ class Config(object):
         """Update configuration file"""
         LOG.debug("SYNC, sections: %s", self.config.sections())
 
-        with open(self.path, 'wb') as configfile:
+        with open(self.path, 'w') as configfile:
             self.config.write(configfile)

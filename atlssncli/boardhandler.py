@@ -26,6 +26,7 @@ from dateutil.parser import parse
 from .config import Config
 from .commandhandler import CommandHandler
 from .rest.agileclient import AgileClient
+from . import util
 
 
 class BoardHandler(CommandHandler):

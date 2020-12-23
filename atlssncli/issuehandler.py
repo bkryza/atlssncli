@@ -18,7 +18,6 @@ import requests
 import click
 import logging as LOG
 import json
-# import util
 from humanfriendly.tables import format_pretty_table, format_robust_table
 from requests.auth import HTTPBasicAuth
 
@@ -26,6 +25,7 @@ from .config import Config
 from .commandhandler import CommandHandler
 from .querybuilder import QueryBuilder
 from .rest.jiraclient import JiraClient
+from . import util
 
 
 class IssueHandler(CommandHandler):

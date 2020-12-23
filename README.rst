@@ -34,7 +34,7 @@ interface for everyday tasks involving sprint, issue and build
 management. atlssncli_ focuses on simplicity over completeness,
 to provide as quick as possible access to most commonly used features,
 assuming that more complex can be achieved otherwise, e.g. using web
-interface.
+interface or other command line clients.
 
 
 Installation
@@ -71,67 +71,74 @@ Configuration file should be placed in `~/.atlssncli/config.ini`:
 	component2 = BKP-CMP2
 	component3 = BKP-CMP3
 
-Usage introduction
-==================
+Basic usage
+===========
+
+...
 
 Command reference
 =================
 
-info - service information
---------------------------
+info
+----
 
-Show information about JIRA® service:
+Show information about services.
 
+Show information about JIRA® service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn info jira
 
-Show information about Bamboo® service:
-
+Show information about Bamboo® service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn info bamboo
 
-agent - Bamboo® agents information
-----------------------------------
+agent
+-----
 
-Show information about Bamboo® agents:
+Bamboo® agents information, REST API for agents only supports a single method.
+
+Show information about Bamboo® agents
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
     atlssn agent list
 
-project - manage projects
--------------------------
+project
+-------
 
 Manage projects in the Jira® and Bamboo® services.
 
-List all available projects:
-
+List all available projects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn project list
 
-Select currently active project:
-
+Select currently active project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-    atlssn project select [<project_key>]
+    atlssn project select <project_key>
 
-Get information about specific project:
-
+Get information about specific project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn project info [<project_key>]
 
-List project components:
-
+List project components
+~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn project list-components [<project_key>]
 
-List project issue types:
-
+List project issue types
+~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn project list-issue-types [<project_key>]
@@ -139,8 +146,8 @@ List project issue types:
 board - manage Jira® boards
 ---------------------------
 
-Get board backlog:
-
+Get board backlog
+~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn board backlog [-a|--assignee <user_id>] [-q|--jql <jql_query>]
@@ -149,20 +156,20 @@ Get board backlog:
     atlssn board backlog -q 'status = "Open" AND assignee = "bkryza"'
     atlssn board backlog -a bkryza
 
-Get board list:
-
+Get board list
+~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn board list
 
-Set default board:
-
+Set default board
+~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn board select <board_id>
 
-Get board status:
-
+Get board status
+~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     atlssn board status [<board_id>]
@@ -176,7 +183,7 @@ List all sprints or sprints in a given state
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-    atlssn sprint list <--active|--future|--closed>
+    atlssn sprint list [--active|--future|--closed]
 
 Create sprint
 ~~~~~~~~~~~~~
@@ -208,43 +215,43 @@ Get sprint status
 ~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-    atlssn sprint status <sprint_id>
+    atlssn sprint status [<sprint_id>]
 
 List sprint issues
 ~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-    atlssn sprint issues <sprint_id>
+    atlssn sprint issues [<sprint_id>]
 
 List sprint issues by assignee
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-    atlssn sprint issues <sprint_id> --assignee johndoe
+    atlssn sprint issues [<sprint_id>] --assignee johndoe
 
 List sprint issues by status
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-    **atlssn sprint issues <sprint_id> --resolved --closed
+    atlssn sprint issues [<sprint_id>] --resolved --closed
 
 issue - manage issues
 ---------------------
 
-Get issue types for active project:
-
+Get issue types for active project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     **atlssn issue types
 
-Get issue types for specific project:
-
+Get issue types for specific project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
     **atlssn issue types <project_id>
 
-Create issue:
-
+Create issue
+~~~~~~~~~~~~
 .. code-block:: bash
 
 	**atlssn issue create <summary> [-t|--type <issue_type>]
@@ -256,8 +263,8 @@ Create issue:
 	                              [-x|--fix-versions <versions>]
 	                              [-c|--components <component>,...,<component>]
 
-Edit issue:
-
+Edit issue
+~~~~~~~~~~
 .. code-block:: bash
 
 	**atlssn issue edit <issue_id> [-t|--type <issue_type>]
@@ -269,92 +276,92 @@ Edit issue:
 	                             [-x|--fix-versions <versions>]
 	                             [-c|--components <component>,...,<component>]
 
-Get issue status:
-
+Get issue status
+~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-		**atlssn issue status <project_id>
+		atlssn issue status <issue_id>
 
-Assign issue:
-
+Assign issue
+~~~~~~~~~~~~
 .. code-block:: bash
 
-		**atlssn issue assign <issue_id> <username>
+		atlssn issue assign <issue_id> <username>
 
-Get issue changelog:
-
+Get issue changelog
+~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue changelog <issue_id>
 
-Add issue comment:
-
+Add issue comment
+~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue comment <issue_id> <comment>
 
-Change issue state:
-
+Change issue state
+~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue update <issue_id> <comment>
 
-Link issues:
-
+Link issues
+~~~~~~~~~~~
 .. code-block:: bash
 
-        **atlssn issue link <issue_id> <outward_issue_id>
+    **atlssn issue link <issue_id> <outward_issue_id>
 
-List issue attachments:
-
+List issue attachments
+~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
-		**atlssn issue attachments <issue_id>
+    **atlssn issue attachments <issue_id>
 
-Add issue attachment:
-
+Add issue attachment
+~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue attach <issue_id> <file_path>
 
-Delete issue attachment:
-
+Delete issue attachment
+~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue detach <issue_id> <file_name>
 
-List possible issue transitions:
-
+List possible issue transitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue transitions <issue_id>
 
-Transition issue to different state:
-
+Transition issue to different state
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue transition <issue_id> <state_name>
 
-List possible issue resolutions:
-
+List possible issue resolutions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue resolutions <issue_id>
 
-Resolve issue:
-
+Resolve issue
+~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue resolve <issue_id> <resolution>
 
-Create branch from issue:
-
+Create branch from issue
+~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue branch <issue_id> <state_name>
 
-List Git branches for issue:
-
+List Git branches for issue
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
 
 		**atlssn issue branches <issue_id>

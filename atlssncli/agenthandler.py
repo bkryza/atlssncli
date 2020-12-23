@@ -38,7 +38,6 @@ class AgentHandler(CommandHandler):
 
     def get_agent_list(self):
         """Show agent list."""
-        LOG.debug('Getting agent list')
 
         res = self.client.get_agents()
 

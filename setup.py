@@ -33,6 +33,7 @@ setup(
         'configparser',
         'Click',
         'humanfriendly',
+        'joblib',
         'six',
         'decorest',
         'pygit2',
