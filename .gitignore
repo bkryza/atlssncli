@@ -5,6 +5,7 @@ Pipfile.lock
 build
 dist
 venv
+venv3
 atlssncli.egg-info
 config.ini
 

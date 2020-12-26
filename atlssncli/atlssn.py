@@ -27,6 +27,7 @@ from .docs import docs
 from .sprint import sprint
 from .build import build
 from .git import git
+from .gitcontext import get_issue_id
 from .issue import issue
 from .project import project
 from .info import info
@@ -36,10 +37,9 @@ from .issuehandler import IssueHandler
 from .commandgroup import *
 from . import __version__
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], auto_envvar_prefix='ATLSSNCLI')
 
-
-@click.group(context_settings={'help_option_names': ['-h', '--help']})
+@click.group(context_settings=CONTEXT_SETTINGS)
 @click.option('-v', '--verbose', count=True, help="Enable verbose output")
 @click.pass_context
 def cli(ctx, verbose):
@@ -80,6 +80,15 @@ def version(ctx):
 def update_cache(ctx):
     """Update autocompletion cache"""
 
+#
+# Try to detect issue id from current git branch
+#
+try:
+    issue_id = get_issue_id()
+    if issue_id:
+        os.environ['ATLSSNCLI_ISSUE_ID'] = issue_id
+except:
+    pass
 
 #
 # Add command groups from separate modules

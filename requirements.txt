@@ -6,3 +6,4 @@ Click
 humanfriendly
 pygit2
 python-dateutil
+requests_toolbelt

@@ -14,7 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
+
 from pygit2 import Repository
+
+issue_id_regexp = re.compile(r'.*/(.*-\d+)-.*')
 
 def get_branch():
     """ """
@@ -25,3 +29,13 @@ def get_repo_name():
     """ """
     repo_url = Repository('.').remotes['origin'].url
     return repo_url.split('/')[-1]
+
+def get_issue_id():
+    """ """
+    branch = Repository('.').head.shorthand
+    res = re.search(issue_id_regexp, branch)
+    if res.group(1):
+        return res.group(1)
+    else:
+        return ''
+

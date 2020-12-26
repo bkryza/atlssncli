@@ -204,7 +204,7 @@ def list(sprint, board_id, active, closed, future):
 @click.option('-r', '--resolved', is_flag=True, help='Include resolved tickets',
               default=False)
 @click.option('-a', '--assignee', help='Specify assignee username')
-@click.option('-q', '--jql', help='Specify custom JQL query to fileter results')
+@click.option('-q', '--jql', help='Specify custom JQL query to filter results')
 @pass_sprint
 def issues(sprint, sprint_id, assignee, opened, in_progress, closed, resolved,
            jql):
