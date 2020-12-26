@@ -28,90 +28,86 @@ from .rest.jiraclient import JiraClient
 
 
 class ProjectHandler(CommandHandler):
-
     def __init__(self, config):
         super(ProjectHandler, self).__init__(config)
-        self.client = JiraClient(config.get_endpoint('jira'))
+        self.client = JiraClient(config.get_endpoint("jira"))
         self.client._set_auth(HTTPBasicAuth(*config.get_auth()))
         pass
 
     def get_project_components(self, project):
-        """Show project components.
-        """
+        """Show project components."""
         if not project:
             project = self.config.get_project()
 
         if not project:
-            LOG.error('No project specified')
-            raise 'No project specified'
+            LOG.error("No project specified")
+            raise "No project specified"
 
-        LOG.debug('Getting project components: %s', project)
+        LOG.debug("Getting project components: %s", project)
 
         res = self.client.get_project(project)
 
-        if not 'components' in res:
-            res['components'] = []
+        if not "components" in res:
+            res["components"] = []
 
-        column_names = ['ID', 'Name']
+        column_names = ["ID", "Name"]
         components = []
-        for component in res['components']:
-            components.append([component['id'], component['name']])
+        for component in res["components"]:
+            components.append([component["id"], component["name"]])
 
         click.echo(format_pretty_table(components, column_names))
 
     def get_project_issue_types(self, project):
-        """Show project issue types.
-        """
+        """Show project issue types."""
         if not project:
             project = self.config.get_project()
 
         if not project:
-            LOG.error('No project specified')
-            raise 'No project specified'
+            LOG.error("No project specified")
+            raise "No project specified"
 
-        LOG.debug('Getting project issue types: %s', project)
+        LOG.debug("Getting project issue types: %s", project)
 
         res = self.client.get_project(project)
 
-        if 'issueTypes' not in res:
-            res['issueTypes'] = []
+        if "issueTypes" not in res:
+            res["issueTypes"] = []
 
-        column_names = ['ID', 'Name']
+        column_names = ["ID", "Name"]
         issue_types = []
-        for issue_type in res['issueTypes']:
-            issue_types.append([issue_type['id'], issue_type['name']])
+        for issue_type in res["issueTypes"]:
+            issue_types.append([issue_type["id"], issue_type["name"]])
 
         click.echo(format_pretty_table(issue_types, column_names))
 
     def get_project_details(self, project):
-        """Show basic information about the project.
-        """
+        """Show basic information about the project."""
         if not project:
             project = self.config.get_project()
 
         if not project:
-            LOG.error('No project specified')
-            raise 'No project specified'
+            LOG.error("No project specified")
+            raise "No project specified"
 
-        LOG.debug('Getting project information: %s', project)
+        LOG.debug("Getting project information: %s", project)
 
         res = self.client.get_project(project)
 
-        column_names = ['Property', 'Value']
+        column_names = ["Property", "Value"]
         project_details = []
-        if 'key' in res:
-            project_details.append(['key', res['key']])
-        if 'id' in res:
-            project_details.append(['id', res['id']])
-        if 'name' in res:
-            project_details.append(['name', res['name']])
-        if 'lead' in res:
-            if 'displayName' in res['lead']:
-                project_details.append(['lead', res['lead']['displayName']])
+        if "key" in res:
+            project_details.append(["key", res["key"]])
+        if "id" in res:
+            project_details.append(["id", res["id"]])
+        if "name" in res:
+            project_details.append(["name", res["name"]])
+        if "lead" in res:
+            if "displayName" in res["lead"]:
+                project_details.append(["lead", res["lead"]["displayName"]])
             else:
-                project_details.append(['lead', res['lead']['name']])
-        if 'url' in res:
-            project_details.append(['url', res['url']])
+                project_details.append(["lead", res["lead"]["name"]])
+        if "url" in res:
+            project_details.append(["url", res["url"]])
         click.echo(format_pretty_table(project_details, column_names))
 
     def list_projects(self):
@@ -120,10 +116,10 @@ class ProjectHandler(CommandHandler):
 
         res = self.client.get_all_projects()
 
-        column_names = ['Key', 'ID', 'Name']
+        column_names = ["Key", "ID", "Name"]
         projects = []
         for project in res:
-            projects.append([project['key'], project['id'], project['name']])
+            projects.append([project["key"], project["id"], project["name"]])
 
         click.echo(format_pretty_table(projects, column_names))
 

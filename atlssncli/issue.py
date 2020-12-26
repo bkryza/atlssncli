@@ -32,9 +32,8 @@ pass_issue = click.make_pass_decorator(Issue)
 @click.group()
 @click.pass_context
 def issue(ctx):
-    """Manage issues
-    """
-    ctx.obj = Issue(ctx.obj['CONFIG'])
+    """Manage issues"""
+    ctx.obj = Issue(ctx.obj["CONFIG"])
 
 
 @issue.command()
@@ -45,7 +44,7 @@ def help(ctx):
 
 
 @issue.command()
-@click.argument('project_id', required=False)
+@click.argument("project_id", required=False)
 @pass_issue
 def types(issue, project_id):
     """List issue types for project."""
@@ -60,51 +59,75 @@ def types(issue, project_id):
 
 
 @issue.command()
-@click.argument('summary')
-@click.option('-p', '--project', help='Project id')
-@click.option('-t', '--issue-type', help='Issue type')
-@click.option('-a', '--assignee', help='Assignee')
-@click.option('-r', '--reporter', help='Reporter')
-@click.option('-i', '--priority', help='Priority')
-@click.option('-l', '--labels', help='Labels (comma separated)')
-@click.option('-e', '--estimate', help='Initial estimate')
-@click.option('-d', '--description', help='Description')
-@click.option('-x', '--fix-versions', help='Fix versions')
-@click.option('-u', '--duedate', help='Due date')
-@click.option('-c', '--components', help='Components (comma separated)')
+@click.argument("summary")
+@click.option("-p", "--project", help="Project id")
+@click.option("-t", "--issue-type", help="Issue type")
+@click.option("-a", "--assignee", help="Assignee")
+@click.option("-r", "--reporter", help="Reporter")
+@click.option("-i", "--priority", help="Priority")
+@click.option("-l", "--labels", help="Labels (comma separated)")
+@click.option("-e", "--estimate", help="Initial estimate")
+@click.option("-d", "--description", help="Description")
+@click.option("-x", "--fix-versions", help="Fix versions")
+@click.option("-u", "--duedate", help="Due date")
+@click.option("-c", "--components", help="Components (comma separated)")
 @pass_issue
-def create(issue, summary, project, issue_type, assignee, reporter,
-           priority, labels, estimate, description, fix_versions, duedate,
-           components):
+def create(
+    issue,
+    summary,
+    project,
+    issue_type,
+    assignee,
+    reporter,
+    priority,
+    labels,
+    estimate,
+    description,
+    fix_versions,
+    duedate,
+    components,
+):
     """Create new issue"""
     LOG.debug("Creating issue %s (components: %s)", summary, components)
     pass
 
 
 @issue.command()
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
-@click.option('-p', '--project', help='Project id')
-@click.option('-t', '--issue-type', help='Issue type')
-@click.option('-a', '--assignee', help='Assignee')
-@click.option('-r', '--reporter', help='Reporter')
-@click.option('-i', '--priority', help='Priority')
-@click.option('-l', '--labels', help='Labels (comma separated)')
-@click.option('-e', '--estimate', help='Initial estimate')
-@click.option('-d', '--description', help='Description')
-@click.option('-x', '--fix-versions', help='Fix versions')
-@click.option('-u', '--duedate', help='Due date')
-@click.option('-c', '--components', help='Components (comma separated)')
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
+@click.option("-p", "--project", help="Project id")
+@click.option("-t", "--issue-type", help="Issue type")
+@click.option("-a", "--assignee", help="Assignee")
+@click.option("-r", "--reporter", help="Reporter")
+@click.option("-i", "--priority", help="Priority")
+@click.option("-l", "--labels", help="Labels (comma separated)")
+@click.option("-e", "--estimate", help="Initial estimate")
+@click.option("-d", "--description", help="Description")
+@click.option("-x", "--fix-versions", help="Fix versions")
+@click.option("-u", "--duedate", help="Due date")
+@click.option("-c", "--components", help="Components (comma separated)")
 @pass_issue
-def edit(issue, summary, project, issue_type, assignee, reporter,
-           priority, labels, estimate, description, fix_versions, duedate,
-           components):
+def edit(
+    issue,
+    summary,
+    project,
+    issue_type,
+    assignee,
+    reporter,
+    priority,
+    labels,
+    estimate,
+    description,
+    fix_versions,
+    duedate,
+    components,
+):
     """Edit existing issue."""
     LOG.debug("Modifying issue %s (components: %s)", summary, components)
     pass
 
 
 @issue.command()
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
 @pass_issue
 def status(issue, issue_id):
     """Get issue"""
@@ -119,7 +142,7 @@ def status(issue, issue_id):
 
 
 @issue.command()
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
 @pass_issue
 def delete(issue, issue_id):
     """Delete issue"""
@@ -127,8 +150,8 @@ def delete(issue, issue_id):
 
 
 @issue.command()
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
-@click.argument('assignee')
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
+@click.argument("assignee")
 @pass_issue
 def assign(issue, issue_id, assignee):
     """Assign issue"""
@@ -137,32 +160,31 @@ def assign(issue, issue_id, assignee):
     try:
         handler = IssueHandler(issue.get_config())
         handler.assign_issue(issue_id, assignee)
-        click.echo('Assigned {} issue to {}'.format(
-            issue_id, assignee))
+        click.echo("Assigned {} issue to {}".format(issue_id, assignee))
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Assigning issue failed")
 
 
-@issue.command('list-transitions')
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
+@issue.command("list-transitions")
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
 @pass_issue
 def transitions(issue, issue_id):
     """List possible transitions"""
     pass
 
 
-@issue.command('transition')
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
-@click.argument('state')
+@issue.command("transition")
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
+@click.argument("state")
 @pass_issue
 def transition(issue, issue_id, state):
     """Transition the issue to another state"""
     pass
 
 
-@issue.command('list-votes')
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
+@issue.command("list-votes")
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
 @pass_issue
 def list_votes(issue, issue_id):
     """List issue votes"""
@@ -170,7 +192,7 @@ def list_votes(issue, issue_id):
 
 
 @issue.command()
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
 @pass_issue
 def vote(issue, issue_id):
     """Vote for an issue"""
@@ -178,25 +200,25 @@ def vote(issue, issue_id):
 
 
 @issue.command()
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
 @pass_issue
 def unvote(issue, issue_id):
     """Unvote an issue"""
     pass
 
 
-@issue.command('branch')
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
-@click.argument('repository')
-@click.argument('branch')
+@issue.command("branch")
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
+@click.argument("repository")
+@click.argument("branch")
 @pass_issue
 def branch(issue, issue_id, repository, branch):
     """Create an issue branch in repository from existing branch"""
     pass
 
 
-@issue.command('branches')
-@click.argument('issue_id', envvar='ATLSSNCLI_ISSUE_ID')
+@issue.command("branches")
+@click.argument("issue_id", envvar="ATLSSNCLI_ISSUE_ID")
 @pass_issue
 def branches(issue, issue_id):
     """List branches created for this issue"""

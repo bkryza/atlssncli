@@ -26,11 +26,12 @@ pass_project = click.make_pass_decorator(Project)
 # PROJECT GROUP
 #
 
+
 @click.group()
 @click.pass_context
 def project(ctx):
     """Manage projects"""
-    ctx.obj = Project(ctx.obj['CONFIG'])
+    ctx.obj = Project(ctx.obj["CONFIG"])
 
 
 @project.command()
@@ -52,7 +53,7 @@ def list(project):
 
 
 @project.command()
-@click.argument('project_id', required=False)
+@click.argument("project_id", required=False)
 @pass_project
 def info(project, project_id):
     """Get project details"""
@@ -63,8 +64,8 @@ def info(project, project_id):
         raise click.ClickException(e.message)
 
 
-@project.command('list-components')
-@click.argument('project_id', required=False)
+@project.command("list-components")
+@click.argument("project_id", required=False)
 @pass_project
 def list_components(project, project_id):
     """List project components"""
@@ -75,8 +76,8 @@ def list_components(project, project_id):
         raise click.ClickException(e.message)
 
 
-@project.command('list-issue-types')
-@click.argument('project_id', required=False)
+@project.command("list-issue-types")
+@click.argument("project_id", required=False)
 @pass_project
 def list_issue_types(project, project_id):
     """List project issue types"""
@@ -88,12 +89,12 @@ def list_issue_types(project, project_id):
 
 
 @project.command()
-@click.argument('project_id', required=False)
+@click.argument("project_id", required=False)
 @pass_project
 def select(project, project_id):
     """Select active project
 
-       All consecutive commands will be performed in the scope of that project.
+    All consecutive commands will be performed in the scope of that project.
     """
     try:
         handler = ProjectHandler(project.get_config())

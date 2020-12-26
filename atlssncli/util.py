@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 def get(d, default_value, *args):
     """Return value from a nested dictionary or default_value."""
 

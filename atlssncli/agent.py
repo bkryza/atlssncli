@@ -34,7 +34,7 @@ pass_agent = click.make_pass_decorator(Agent)
 @click.pass_context
 def agent(ctx):
     """Agent management"""
-    ctx.obj = Agent(ctx.obj['CONFIG'])
+    ctx.obj = Agent(ctx.obj["CONFIG"])
 
 
 @agent.command()

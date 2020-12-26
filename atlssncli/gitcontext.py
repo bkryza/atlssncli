@@ -18,24 +18,26 @@ import re
 
 from pygit2 import Repository
 
-issue_id_regexp = re.compile(r'.*/(.*-\d+)-.*')
+issue_id_regexp = re.compile(r".*/(.*-\d+)-.*")
+
 
 def get_branch():
     """ """
-    branch = Repository('.').head.shorthand
+    branch = Repository(".").head.shorthand
     return branch
+
 
 def get_repo_name():
     """ """
-    repo_url = Repository('.').remotes['origin'].url
-    return repo_url.split('/')[-1]
+    repo_url = Repository(".").remotes["origin"].url
+    return repo_url.split("/")[-1]
+
 
 def get_issue_id():
     """ """
-    branch = Repository('.').head.shorthand
+    branch = Repository(".").head.shorthand
     res = re.search(issue_id_regexp, branch)
     if res.group(1):
         return res.group(1)
     else:
-        return ''
-
+        return ""

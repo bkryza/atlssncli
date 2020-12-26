@@ -29,10 +29,9 @@ from . import util
 
 
 class IssueHandler(CommandHandler):
-
     def __init__(self, config):
         super(IssueHandler, self).__init__(config)
-        self.client = JiraClient(config.get_endpoint('jira'))
+        self.client = JiraClient(config.get_endpoint("jira"))
         self.client._set_auth(HTTPBasicAuth(*config.get_auth()))
 
     def get_issue_types(self, project_id=None):
@@ -40,10 +39,10 @@ class IssueHandler(CommandHandler):
         if not project_id:
             project_id = self.config.get_project()
             if not project_id:
-                LOG.error('Cannot list issue types without project_id')
-                raise 'Cannot list issue types without project_id'
+                LOG.error("Cannot list issue types without project_id")
+                raise "Cannot list issue types without project_id"
 
-        LOG.debug('Getting issue types for project: %s', project_id)
+        LOG.debug("Getting issue types for project: %s", project_id)
 
         res = self.client.get_issue_types(project_id)
 
@@ -51,7 +50,7 @@ class IssueHandler(CommandHandler):
 
     def get_issue(self, issue_id):
         """Show issue."""
-        LOG.debug('Getting issue: %s', issue_id)
+        LOG.debug("Getting issue: %s", issue_id)
 
         res = self.client.get_issue(issue_id)
 
@@ -59,34 +58,47 @@ class IssueHandler(CommandHandler):
 
     def assign_issue(self, issue_id, assignee):
         """Assign issue."""
-        LOG.debug('Assigning issue: %s', issue_id, assignee)
+        LOG.debug("Assigning issue: %s", issue_id, assignee)
 
-        self.client.assign_issue(issue_id, {'name': assignee})
+        self.client.assign_issue(issue_id, {"name": assignee})
 
     def _render_issue_types(self, issuetypes):
         """Render issue types."""
 
-        column_names = ['ID', 'Name', 'Description']
+        column_names = ["ID", "Name", "Description"]
         values = []
         for it in issuetypes:
-            values.append(
-                [str(it['id']), it['name'], it['description']])
+            values.append([str(it["id"]), it["name"], it["description"]])
 
         click.echo(format_pretty_table(values, column_names))
 
     def _render_issues(self, issues):
         """Render sprint issues."""
 
-        column_names = ['ID', 'Key', 'Summary', 'Status', 'Assignee', 'Progress']
+        column_names = [
+            "ID",
+            "Key",
+            "Summary",
+            "Status",
+            "Assignee",
+            "Progress",
+        ]
         values = []
         for issue in issues:
             values.append(
-                [str(issue['id']), str(issue['key']),
-                 str(util.get(issue, '-', 'fields', 'summary')),
-                 str(util.get(issue, '-', 'fields', 'status', 'name')),
-                 str(util.get(issue, 'Unassigned',
-                              'fields', 'assignee', 'key')),
-                 str(util.get(issue, '-', 'fields', 'progress', 'progress'))])
+                [
+                    str(issue["id"]),
+                    str(issue["key"]),
+                    str(util.get(issue, "-", "fields", "summary")),
+                    str(util.get(issue, "-", "fields", "status", "name")),
+                    str(
+                        util.get(
+                            issue, "Unassigned", "fields", "assignee", "key"
+                        )
+                    ),
+                    str(util.get(issue, "-", "fields", "progress", "progress")),
+                ]
+            )
 
         if len(values) > 1:
             click.echo(format_pretty_table(values, column_names))

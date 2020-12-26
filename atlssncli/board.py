@@ -27,11 +27,12 @@ pass_board = click.make_pass_decorator(Board)
 # BOARD GROUP
 #
 
+
 @click.group()
 @click.pass_context
 def board(ctx):
     """Board management"""
-    ctx.obj = Board(ctx.obj['CONFIG'])
+    ctx.obj = Board(ctx.obj["CONFIG"])
 
 
 @board.command()
@@ -42,7 +43,7 @@ def help(ctx):
 
 
 @board.command()
-@click.argument('board_id', required=True)
+@click.argument("board_id", required=True)
 @pass_board
 def select(board, board_id):
     """
@@ -62,10 +63,12 @@ def select(board, board_id):
 
 
 @board.command()
-@click.option('--scrum', is_flag=True, help='Include scrum boards',
-              default=False)
-@click.option('--kanban', is_flag=True, help='Include kanban boards',
-              default=False)
+@click.option(
+    "--scrum", is_flag=True, help="Include scrum boards", default=False
+)
+@click.option(
+    "--kanban", is_flag=True, help="Include kanban boards", default=False
+)
 @pass_board
 def list(board, scrum, kanban):
     """Get board list."""
@@ -75,19 +78,19 @@ def list(board, scrum, kanban):
         handler = BoardHandler(board.get_config())
         board_type = []
         if scrum:
-            board_type.append('scrum')
+            board_type.append("scrum")
         if kanban:
-            board_type.append('kanban')
+            board_type.append("kanban")
         if not scrum and not kanban:
-            board_type = ['scrum', 'kanban']
-        handler.get_board_list(','.join(board_type))
+            board_type = ["scrum", "kanban"]
+        handler.get_board_list(",".join(board_type))
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Get sprint status failed")
 
 
 @board.command()
-@click.option('-b', '--board', 'board_id', required=False)
+@click.option("-b", "--board", "board_id", required=False)
 @pass_board
 def status(board, board_id):
     """
@@ -106,9 +109,9 @@ def status(board, board_id):
 
 
 @board.command()
-@click.argument('board_id', required=False)
-@click.option('-a', '--assignee', help='Specify assignee username.')
-@click.option('-q', '--jql', help='JQL query.', required=False)
+@click.argument("board_id", required=False)
+@click.option("-a", "--assignee", help="Specify assignee username.")
+@click.option("-q", "--jql", help="JQL query.", required=False)
 @pass_board
 def backlog(board, board_id, assignee, jql):
     """
@@ -127,8 +130,10 @@ def backlog(board, board_id, assignee, jql):
 
 
 @board.command()
-@click.argument('board_id', required=False)
-@click.option('-r', '--released', is_flag=True, help='List only release versions.')
+@click.argument("board_id", required=False)
+@click.option(
+    "-r", "--released", is_flag=True, help="List only release versions."
+)
 @pass_board
 def version(board, board_id, released):
     """Get release versions associated with the board."""

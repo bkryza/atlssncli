@@ -18,18 +18,20 @@ from joblib import Memory
 
 memory = Memory("~/.atlssncli/cache", verbose=0)
 
-@memory.cache(ignore=['client'])
+
+@memory.cache(ignore=["client"])
 def get_bamboo_plan_shortname(client, plan_id):
     """Get shortName of a Bamboo plan based on plan_id"""
     plan = client.get_plan(plan_id)
-    if plan['shortName']:
-        plan_name = plan['shortName']
+    if plan["shortName"]:
+        plan_name = plan["shortName"]
     else:
-        plan_name = plan['master']['shortName']
+        plan_name = plan["master"]["shortName"]
     return plan_name
 
-@memory.cache(ignore=['client'])
+
+@memory.cache(ignore=["client"])
 def get_bamboo_plan_name(client, plan_id):
     """Get name of a Bamboo plan based on plan_id"""
     plan = client.get_plan(plan_id)
-    return plan['name']
+    return plan["name"]

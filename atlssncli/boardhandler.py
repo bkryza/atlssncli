@@ -30,16 +30,15 @@ from . import util
 
 
 class BoardHandler(CommandHandler):
-
     def __init__(self, config):
         super(BoardHandler, self).__init__(config)
-        self.client = AgileClient(config.get_endpoint('agile'))
+        self.client = AgileClient(config.get_endpoint("agile"))
         self.client._set_auth(HTTPBasicAuth(*config.get_auth()))
         pass
 
     def get_board_list(self, board_type):
         """Show board list."""
-        LOG.debug('Getting board list')
+        LOG.debug("Getting board list")
 
         res = self.client.get_boards(board_type)
 
@@ -47,7 +46,7 @@ class BoardHandler(CommandHandler):
 
     def get_board_status(self, board_id):
         """Show board status."""
-        LOG.debug('Getting board list')
+        LOG.debug("Getting board list")
 
         if not board_id:
             board_id = self.config.get_board()
@@ -58,16 +57,18 @@ class BoardHandler(CommandHandler):
 
     def get_board_backlog(self, board_id, assignee, jql):
         """Show board status."""
-        LOG.debug('Getting board backlog: %s', board_id)
+        LOG.debug("Getting board backlog: %s", board_id)
 
         if assignee and jql:
-            raise 'Specifying assignee and JQL together doesn\'t make sense'
+            raise "Specifying assignee and JQL together doesn't make sense"
 
         if not board_id:
             board_id = self.config.get_board()
 
         if assignee:
-            jql = "assignee={}".format(assignee, )
+            jql = "assignee={}".format(
+                assignee,
+            )
 
         res = self.client.get_board_backlog(board_id, jql)
 
@@ -75,24 +76,22 @@ class BoardHandler(CommandHandler):
 
     def get_board_versions(self, board_id, released):
         """List board release versions."""
-        LOG.debug('Getting board release versions: %s', board_id)
+        LOG.debug("Getting board release versions: %s", board_id)
 
         if not board_id:
             board_id = self.config.get_board()
 
-        is_last, versions = \
-            self.client.get_board_versions(board_id, released)
+        is_last, versions = self.client.get_board_versions(board_id, released)
 
         self._render_board_versions(versions)
 
     def _render_board_list(self, boards):
         """Render board list."""
 
-        column_names = ['ID', 'Name', 'Type']
+        column_names = ["ID", "Name", "Type"]
         values = []
         for board in boards:
-            values.append(
-                [str(board['id']), board['name'], board['type']])
+            values.append([str(board["id"]), board["name"], board["type"]])
 
         click.echo(format_pretty_table(values, column_names))
 
@@ -101,14 +100,17 @@ class BoardHandler(CommandHandler):
 
         LOG.debug("Rendering board backlog %s", str(issues))
 
-        column_names = ['ID', 'Name', 'Reporter', 'Assignee']
+        column_names = ["ID", "Name", "Reporter", "Assignee"]
         values = []
         for i in issues:
             values.append(
-                [str(i['key']),
-                 util.get(i, '-', 'fields', 'summary'),
-                 util.get(i, '-', 'fields', 'reporter', 'name'),
-                 util.get(i, '-', 'fields', 'assignee', 'name')])
+                [
+                    str(i["key"]),
+                    util.get(i, "-", "fields", "summary"),
+                    util.get(i, "-", "fields", "reporter", "name"),
+                    util.get(i, "-", "fields", "assignee", "name"),
+                ]
+            )
 
         click.echo(format_pretty_table(values, column_names))
 
@@ -117,13 +119,16 @@ class BoardHandler(CommandHandler):
 
         LOG.debug("Rendering board versions %s", str(versions))
 
-        column_names = ['ID', 'Project ID', 'Name', 'Description']
+        column_names = ["ID", "Project ID", "Name", "Description"]
         values = []
         for i in versions:
             values.append(
-                [str(i['id']),
-                 str(i['projectId']),
-                 str(i['name']),
-                 str(i.get('description', '-'))])
+                [
+                    str(i["id"]),
+                    str(i["projectId"]),
+                    str(i["name"]),
+                    str(i.get("description", "-")),
+                ]
+            )
 
         click.echo(format_pretty_table(values, column_names))

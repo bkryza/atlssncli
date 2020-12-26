@@ -30,7 +30,7 @@ pass_info = click.make_pass_decorator(Info)
 @click.pass_context
 def info(ctx):
     """Show information about configured Atlassian services"""
-    ctx.obj = Info(ctx.obj['CONFIG'])
+    ctx.obj = Info(ctx.obj["CONFIG"])
 
 
 @info.command()

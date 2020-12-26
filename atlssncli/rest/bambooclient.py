@@ -17,7 +17,17 @@
 import logging as LOG
 import json
 
-from decorest import DELETE, GET, POST, PUT, query, RestClient, content, accept, on
+from decorest import (
+    DELETE,
+    GET,
+    POST,
+    PUT,
+    query,
+    RestClient,
+    content,
+    accept,
+    on,
+)
 
 
 class BambooClient(RestClient):
@@ -26,110 +36,110 @@ class BambooClient(RestClient):
     def __init__(self, endpoint):
         super(BambooClient, self).__init__(endpoint)
 
-    @GET('info')
-    @content('application/json')
-    @accept('application/json')
+    @GET("info")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def get_info(self):
         """Get Bamboo server info"""
 
-    @GET('agent')
-    @content('application/json')
-    @accept('application/json')
+    @GET("agent")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def get_agents(self):
         """Get Bamboo plans"""
 
-    @GET('queue')
-    @query('expand')
-    @query('max_result', 'max-result')
-    @content('application/json')
-    @accept('application/json')
-    @on(200, lambda r: r.json()['queuedBuilds']['queuedBuild'])
-    def get_queue(self, expand='queuedBuilds', max_result=500):
+    @GET("queue")
+    @query("expand")
+    @query("max_result", "max-result")
+    @content("application/json")
+    @accept("application/json")
+    @on(200, lambda r: r.json()["queuedBuilds"]["queuedBuild"])
+    def get_queue(self, expand="queuedBuilds", max_result=500):
         """Get Bamboo build queue"""
 
-    @GET('plan')
-    @query('expand')
-    @query('max_result', 'max-result')
-    @content('application/json')
-    @accept('application/json')
-    @on(200, lambda r: r.json()['plans']['plan'])
-    def get_plans(self, expand='plans', max_result=500):
+    @GET("plan")
+    @query("expand")
+    @query("max_result", "max-result")
+    @content("application/json")
+    @accept("application/json")
+    @on(200, lambda r: r.json()["plans"]["plan"])
+    def get_plans(self, expand="plans", max_result=500):
         """Get Bamboo plans"""
 
-    @GET('plan/{plan_id}')
-    @content('application/json')
-    @accept('application/json')
+    @GET("plan/{plan_id}")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def get_plan(self, plan_id):
         """Get Bamboo plan"""
 
-    @GET('plan/{plan_id}/label')
-    @content('application/json')
-    @accept('application/json')
-    @on(200, lambda r: [l.values()[0] for l in r.json()['labels']['label']])
+    @GET("plan/{plan_id}/label")
+    @content("application/json")
+    @accept("application/json")
+    @on(200, lambda r: [l.values()[0] for l in r.json()["labels"]["label"]])
     def get_plan_labels(self, plan_id):
         """Get Bamboo plan labels"""
 
-    @GET('plan/{plan_id}/branch')
-    @query('max_result', 'max-result')
-    @content('application/json')
-    @accept('application/json')
-    @on(200, lambda r: r.json()['branches']['branch'])
+    @GET("plan/{plan_id}/branch")
+    @query("max_result", "max-result")
+    @content("application/json")
+    @accept("application/json")
+    @on(200, lambda r: r.json()["branches"]["branch"])
     def get_plan_branches(self, plan_id, max_result=500):
         """Get Bamboo plan branches"""
 
-    @GET('result')
-    @query('max_results', 'max-results')
-    @query('issue_id', 'issueKey')
-    @query('favourite')
-    @content('application/json')
-    @accept('application/json')
-    @on(200, lambda r: r.json()['results']['result'])
+    @GET("result")
+    @query("max_results", "max-results")
+    @query("issue_id", "issueKey")
+    @query("favourite")
+    @content("application/json")
+    @accept("application/json")
+    @on(200, lambda r: r.json()["results"]["result"])
     def get_build_results(self, issue_id, favourite, max_results=500):
         """Get Bamboo plan branches"""
 
-    @GET('plan/{plan_id}/artifact')
-    @query('max_result', 'max-result')
-    @content('application/json')
-    @accept('application/json')
-    @on(200, lambda r: r.json()['artifacts']['artifact'])
+    @GET("plan/{plan_id}/artifact")
+    @query("max_result", "max-result")
+    @content("application/json")
+    @accept("application/json")
+    @on(200, lambda r: r.json()["artifacts"]["artifact"])
     def get_plan_artifacts(self, plan_id, max_result=500):
         """Get Bamboo plan artifacts"""
 
-    @GET('result/{plan_id}')
-    @content('application/json')
-    @accept('application/json')
+    @GET("result/{plan_id}")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def get_plan_results(self, plan_id):
         """Get Bamboo plan build results"""
 
-    @POST('queue/{plan_id}')
-    @content('application/json')
-    @accept('application/json')
+    @POST("queue/{plan_id}")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def build_plan(self, plan_id):
         """Schedule plan build"""
 
-    @PUT('plan/{plan_id}/branch/{branch_name}')
-    @query('vcs_branch', 'vcsBranch')
-    @content('application/json')
-    @accept('application/json')
+    @PUT("plan/{plan_id}/branch/{branch_name}")
+    @query("vcs_branch", "vcsBranch")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def create_plan_branch(self, plan_id, branch_name, vcs_branch):
         """Enable plan branch"""
 
-    @POST('plan/{plan_id}/enable')
-    @content('application/json')
-    @accept('application/json')
+    @POST("plan/{plan_id}/enable")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def enable_plan(self, plan_id):
         """Enable plan branch"""
 
-    @DELETE('plan/{plan_id}/enable')
-    @content('application/json')
-    @accept('application/json')
+    @DELETE("plan/{plan_id}/enable")
+    @content("application/json")
+    @accept("application/json")
     @on(200, lambda r: r.json())
     def disable_plan(self, plan_id):
         """Disable plan branch"""

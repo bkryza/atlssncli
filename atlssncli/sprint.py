@@ -27,11 +27,12 @@ pass_sprint = click.make_pass_decorator(Sprint)
 # SPRINT GROUP
 #
 
+
 @click.group()
 @click.pass_context
 def sprint(ctx):
     """Sprint management"""
-    ctx.obj = Sprint(ctx.obj['CONFIG'])
+    ctx.obj = Sprint(ctx.obj["CONFIG"])
 
 
 @sprint.command()
@@ -42,7 +43,7 @@ def help(ctx):
 
 
 @sprint.command()
-@click.argument('sprint_id', required=False)
+@click.argument("sprint_id", required=False)
 @pass_sprint
 def status(sprint, sprint_id):
     """
@@ -61,10 +62,10 @@ def status(sprint, sprint_id):
 
 
 @sprint.command()
-@click.argument('board_id', required=False)
-@click.option('-n', '--name', required=False)
-@click.option('-s', '--start-date', 'start_date', required=False)
-@click.option('-d', '--duration', required=False)
+@click.argument("board_id", required=False)
+@click.option("-n", "--name", required=False)
+@click.option("-s", "--start-date", "start_date", required=False)
+@click.option("-d", "--duration", required=False)
 @pass_sprint
 def create(sprint, board_id, name, start_date, duration):
     """
@@ -84,7 +85,7 @@ def create(sprint, board_id, name, start_date, duration):
 
 
 @sprint.command()
-@click.argument('sprint_id')
+@click.argument("sprint_id")
 @pass_sprint
 def delete(sprint, sprint_id):
     """Delete specific sprint."""
@@ -94,15 +95,19 @@ def delete(sprint, sprint_id):
     try:
         handler = SprintHandler(sprint.get_config())
         handler.delete_sprint(sprint_id)
-        click.echo("Sprint {} deleted successfully".format(sprint_id,))
+        click.echo(
+            "Sprint {} deleted successfully".format(
+                sprint_id,
+            )
+        )
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Sprint delete failed")
 
 
 @sprint.command()
-@click.argument('sprint_id', required=False)
-@click.argument('name')
+@click.argument("sprint_id", required=False)
+@click.argument("name")
 @pass_sprint
 def rename(sprint, sprint_id, name):
     """Rename specific sprint."""
@@ -118,9 +123,9 @@ def rename(sprint, sprint_id, name):
 
 
 @sprint.command()
-@click.argument('sprint_id')
-@click.option('-s', '--start-date', 'start_date', required=False)
-@click.option('-d', '--duration', required=False)
+@click.argument("sprint_id")
+@click.option("-s", "--start-date", "start_date", required=False)
+@click.option("-d", "--duration", required=False)
 @pass_sprint
 def start(sprint, sprint_id, start_date, duration):
     """
@@ -144,7 +149,7 @@ def start(sprint, sprint_id, start_date, duration):
 
 
 @sprint.command()
-@click.argument('sprint_id', required=False)
+@click.argument("sprint_id", required=False)
 @pass_sprint
 def close(sprint, sprint_id):
     """Close specific sprint."""
@@ -160,13 +165,16 @@ def close(sprint, sprint_id):
 
 
 @sprint.command()
-@click.argument('board_id', required=False)
-@click.option('-a', '--active', is_flag=True, help='Include active sprints',
-              default=False)
-@click.option('-c', '--closed', is_flag=True, help='Include closed sprints',
-              default=False)
-@click.option('-f', '--future', is_flag=True, help='Include future sprints',
-              default=False)
+@click.argument("board_id", required=False)
+@click.option(
+    "-a", "--active", is_flag=True, help="Include active sprints", default=False
+)
+@click.option(
+    "-c", "--closed", is_flag=True, help="Include closed sprints", default=False
+)
+@click.option(
+    "-f", "--future", is_flag=True, help="Include future sprints", default=False
+)
 @pass_sprint
 def list(sprint, board_id, active, closed, future):
     """
@@ -182,32 +190,51 @@ def list(sprint, board_id, active, closed, future):
         handler = SprintHandler(sprint.get_config())
         state = []
         if active:
-            state.append('active')
+            state.append("active")
         if closed:
-            state.append('closed')
+            state.append("closed")
         if future:
-            state.append('future')
-        handler.get_sprint_list(board_id, ','.join(state))
+            state.append("future")
+        handler.get_sprint_list(board_id, ",".join(state))
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Listing sprints failed")
 
 
 @sprint.command()
-@click.argument('sprint_id', required=False)
-@click.option('-o', '--open', 'opened', is_flag=True,
-              help='Include open tickets', default=False)
-@click.option('-c', '--closed', is_flag=True, help='Include closed tickets',
-              default=False)
-@click.option('-p', '--in-progress', 'in_progress', is_flag=True,
-              help='Include in progress tickets', default=False)
-@click.option('-r', '--resolved', is_flag=True, help='Include resolved tickets',
-              default=False)
-@click.option('-a', '--assignee', help='Specify assignee username')
-@click.option('-q', '--jql', help='Specify custom JQL query to filter results')
+@click.argument("sprint_id", required=False)
+@click.option(
+    "-o",
+    "--open",
+    "opened",
+    is_flag=True,
+    help="Include open tickets",
+    default=False,
+)
+@click.option(
+    "-c", "--closed", is_flag=True, help="Include closed tickets", default=False
+)
+@click.option(
+    "-p",
+    "--in-progress",
+    "in_progress",
+    is_flag=True,
+    help="Include in progress tickets",
+    default=False,
+)
+@click.option(
+    "-r",
+    "--resolved",
+    is_flag=True,
+    help="Include resolved tickets",
+    default=False,
+)
+@click.option("-a", "--assignee", help="Specify assignee username")
+@click.option("-q", "--jql", help="Specify custom JQL query to filter results")
 @pass_sprint
-def issues(sprint, sprint_id, assignee, opened, in_progress, closed, resolved,
-           jql):
+def issues(
+    sprint, sprint_id, assignee, opened, in_progress, closed, resolved, jql
+):
     """
     List issues for sprint.
     """
@@ -217,7 +244,8 @@ def issues(sprint, sprint_id, assignee, opened, in_progress, closed, resolved,
     try:
         handler = SprintHandler(sprint.get_config())
         handler.get_sprint_issues(
-            sprint_id, assignee, opened, in_progress, closed, resolved, jql)
+            sprint_id, assignee, opened, in_progress, closed, resolved, jql
+        )
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Listing sprint issues failed")

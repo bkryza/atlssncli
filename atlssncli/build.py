@@ -27,11 +27,12 @@ pass_build = click.make_pass_decorator(Build)
 # BUILD GROUP
 #
 
+
 @click.group()
 @click.pass_context
 def build(ctx):
     """Build management"""
-    ctx.obj = Build(ctx.obj['CONFIG'])
+    ctx.obj = Build(ctx.obj["CONFIG"])
 
 
 @build.command()
@@ -42,7 +43,7 @@ def help(ctx):
 
 
 @build.command()
-@click.argument('plan_id')
+@click.argument("plan_id")
 @pass_build
 def run(build, plan_id):
     """Add plan to build queue."""
@@ -56,8 +57,8 @@ def run(build, plan_id):
 
 
 @build.command()
-@click.argument('plan_id', required=False, nargs=-1)
-@click.option('-b', '--branch', help='Branch name')
+@click.argument("plan_id", required=False, nargs=-1)
+@click.option("-b", "--branch", help="Branch name")
 @pass_build
 def enable_branch(build, plan_id, branch):
     """Enable branch for plan"""
@@ -71,8 +72,8 @@ def enable_branch(build, plan_id, branch):
 
 
 @build.command()
-@click.argument('plan_id', required=False, nargs=-1)
-@click.option('-b', '--branch', help='Branch name')
+@click.argument("plan_id", required=False, nargs=-1)
+@click.option("-b", "--branch", help="Branch name")
 @pass_build
 def disable_branch(build, plan_id, branch):
     """Disable branch for plan."""
@@ -86,8 +87,8 @@ def disable_branch(build, plan_id, branch):
 
 
 @build.command()
-@click.argument('plan_id', required=False, nargs=-1)
-@click.option('-b', '--branch', help='Branch name')
+@click.argument("plan_id", required=False, nargs=-1)
+@click.option("-b", "--branch", help="Branch name")
 @pass_build
 def status(build, plan_id, branch):
     """Get plan branch status."""
@@ -113,8 +114,8 @@ def queue(build):
         raise click.ClickException("Failed getting build queue")
 
 
-@build.command('list-branches')
-@click.argument('plan_id', required=False, nargs=1)
+@build.command("list-branches")
+@click.argument("plan_id", required=False, nargs=1)
 @pass_build
 def list_branches(build, plan_id):
     """List branches for build plan."""
@@ -128,8 +129,8 @@ def list_branches(build, plan_id):
         raise click.ClickException("Listing plan branches failed")
 
 
-@build.command('list-artifacts')
-@click.argument('plan_id', required=False, nargs=1)
+@build.command("list-artifacts")
+@click.argument("plan_id", required=False, nargs=1)
 @pass_build
 def list_artifacts(build, plan_id):
     """List artifacts for build plan."""
@@ -143,10 +144,15 @@ def list_artifacts(build, plan_id):
         raise click.ClickException("Listing plan artifacts failed")
 
 
-@build.command('results')
-@click.argument('issue_id', required=False, nargs=1)
-@click.option('-f', '--favourite', help='Only favourite plans.', default=False,
-              is_flag=True)
+@build.command("results")
+@click.argument("issue_id", required=False, nargs=1)
+@click.option(
+    "-f",
+    "--favourite",
+    help="Only favourite plans.",
+    default=False,
+    is_flag=True,
+)
 @pass_build
 def get_results(build, issue_id, favourite):
     """Get build results."""

@@ -29,7 +29,7 @@ pass_agile = click.make_pass_decorator(Agile)
 @click.pass_context
 def agile(ctx):
     """Sprint management"""
-    ctx.obj = Agile(ctx.obj['CONFIG'])
+    ctx.obj = Agile(ctx.obj["CONFIG"])
 
 
 @agile.command()
@@ -39,38 +39,38 @@ def help(ctx):
     click.echo(ctx.parent.get_help())
 
 
-@agile.command('create-sprint')
-@click.argument('sprint')
+@agile.command("create-sprint")
+@click.argument("sprint")
 @pass_agile
 def create_sprint(agile, sprint):
     """Create new sprint"""
     click.echo(ctx.parent.get_help())
 
 
-@agile.command('start-sprint')
-@click.argument('sprint')
+@agile.command("start-sprint")
+@click.argument("sprint")
 @pass_agile
 def create_sprint(agile, sprint):
     """Create new sprint"""
     click.echo(ctx.parent.get_help())
 
 
-@agile.command('close-sprint')
+@agile.command("close-sprint")
 @pass_agile
 def close_sprint(agile):
     """Close sprint"""
     click.echo(ctx.parent.get_help())
 
 
-@agile.command('delete-sprint')
-@click.argument('sprint')
+@agile.command("delete-sprint")
+@click.argument("sprint")
 @pass_agile
 def delete_sprint(agile, sprint):
     """Create new sprint"""
     click.echo(ctx.parent.get_help())
 
 
-@agile.command('sprint-status')
+@agile.command("sprint-status")
 @pass_agile
 def sprint_status(agile):
     """Get currently active sprint status"""

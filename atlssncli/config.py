@@ -39,76 +39,85 @@ PLANS_CACHE = join(CACHE_DIR, "_plans")
 USERS_CACHE = join(CACHE_DIR, "_users")
 
 # Required config sections
-REQUIRED_SECTIONS = set(['common', 'jira', 'bitbucket', 'bamboo'])
+REQUIRED_SECTIONS = set(["common", "jira", "bitbucket", "bamboo"])
 
 
 class Config(object):
-
     def __init__(self, config_path=CONFIG_PATH):
         self.path = config_path
         self.config = configparser.ConfigParser()
-        LOG.debug('Reading configuration from %s', self.path)
+        LOG.debug("Reading configuration from %s", self.path)
         self.config.read(self.path)
-        LOG.debug('Got configuration sections: %s',
-                  ",".join(self.config.sections()))
+        LOG.debug(
+            "Got configuration sections: %s", ",".join(self.config.sections())
+        )
 
     def validate(self):
         """Validate the config file"""
 
         if not REQUIRED_SECTIONS.issubset(set(self.config.sections())):
-            raise Exception("Missing required config sections: %s" %
-                            (",".join(REQUIRED_SECTIONS.
-                                      difference(set(self.config.sections())))))
+            raise Exception(
+                "Missing required config sections: %s"
+                % (
+                    ",".join(
+                        REQUIRED_SECTIONS.difference(
+                            set(self.config.sections())
+                        )
+                    )
+                )
+            )
         return True
 
     def get_auth(self, service=None):
         """Return the authentication credentials for service"""
 
-        return (self.config.get('common', 'username'),
-                self.config.get('common', 'password'))
+        return (
+            self.config.get("common", "username"),
+            self.config.get("common", "password"),
+        )
 
     def get_endpoint(self, service):
         """Get endpoint of specific service"""
 
-        return self.config.get(service, 'endpoint')
+        return self.config.get(service, "endpoint")
 
     def get_board(self):
         """Get active board"""
 
-        return self.config.get('agile', 'board')
+        return self.config.get("agile", "board")
 
     def set_board(self, board_id):
         """Set default board"""
 
-        self.config.set('agile', 'board', board_id)
+        self.config.set("agile", "board", board_id)
         self.sync()
 
     def get_sprint_duration(self):
         """Get active board"""
 
-        return self.config.get('agile', 'sprint_duration')
+        return self.config.get("agile", "sprint_duration")
 
     def get_project(self):
         """Get active project"""
 
-        active_project = self.config.get('common', 'active_project')
+        active_project = self.config.get("common", "active_project")
 
         return active_project
 
     def set_project(self, project):
         """Set active project"""
 
-        self.config.set('common', 'active_project', project)
+        self.config.set("common", "active_project", project)
         self.sync()
 
     def get_repo_plan_ids(self, repo):
         """Get Bamboo plan ids related to a repository by repository name"""
 
-        return tuple(self.config.get('bamboo', repo).split(','))
+        return tuple(self.config.get("bamboo", repo).split(","))
 
     def sync(self):
         """Update configuration file"""
         LOG.debug("SYNC, sections: %s", self.config.sections())
 
-        with open(self.path, 'w') as configfile:
+        with open(self.path, "w") as configfile:
             self.config.write(configfile)

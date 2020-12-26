@@ -37,10 +37,13 @@ from .issuehandler import IssueHandler
 from .commandgroup import *
 from . import __version__
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'], auto_envvar_prefix='ATLSSNCLI')
+CONTEXT_SETTINGS = dict(
+    help_option_names=["-h", "--help"], auto_envvar_prefix="ATLSSNCLI"
+)
+
 
 @click.group(context_settings=CONTEXT_SETTINGS)
-@click.option('-v', '--verbose', count=True, help="Enable verbose output")
+@click.option("-v", "--verbose", count=True, help="Enable verbose output")
 @click.pass_context
 def cli(ctx, verbose):
     """
@@ -55,7 +58,7 @@ def cli(ctx, verbose):
         config = Config()
         config.validate()
         ctx.obj = {}
-        ctx.obj['CONFIG'] = config
+        ctx.obj["CONFIG"] = config
     except Exception as e:
         LOG.error("Configuration error")
         raise click.ClickException(str(e))
@@ -75,10 +78,11 @@ def version(ctx):
     click.echo(".".join(map(lambda x: str(x), __version__)))
 
 
-@cli.command('update-cache')
+@cli.command("update-cache")
 @click.pass_context
 def update_cache(ctx):
     """Update autocompletion cache"""
+
 
 #
 # Try to detect issue id from current git branch
@@ -86,7 +90,7 @@ def update_cache(ctx):
 try:
     issue_id = get_issue_id()
     if issue_id:
-        os.environ['ATLSSNCLI_ISSUE_ID'] = issue_id
+        os.environ["ATLSSNCLI_ISSUE_ID"] = issue_id
 except:
     pass
 

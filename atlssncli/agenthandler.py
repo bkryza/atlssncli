@@ -29,10 +29,9 @@ from .rest.bambooclient import BambooClient
 
 
 class AgentHandler(CommandHandler):
-
     def __init__(self, config):
         super(AgentHandler, self).__init__(config)
-        self.client = BambooClient(config.get_endpoint('bamboo'))
+        self.client = BambooClient(config.get_endpoint("bamboo"))
         self.client._set_auth(HTTPBasicAuth(*config.get_auth()))
         pass
 
@@ -46,12 +45,18 @@ class AgentHandler(CommandHandler):
     def _render_agent_list(self, agents):
         """Render agent list."""
 
-        column_names = ['ID', 'Name', 'Type', 'Active', 'Enabled', 'Busy']
+        column_names = ["ID", "Name", "Type", "Active", "Enabled", "Busy"]
         values = []
         for agent in agents:
             values.append(
-                [str(agent['id']), agent['name'], agent['type'],
-                 str(agent['active']), str(agent['enabled']),
-                 str(agent['busy'])])
+                [
+                    str(agent["id"]),
+                    agent["name"],
+                    agent["type"],
+                    str(agent["active"]),
+                    str(agent["enabled"]),
+                    str(agent["busy"]),
+                ]
+            )
 
         click.echo(format_pretty_table(values, column_names))
