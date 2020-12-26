@@ -22,11 +22,12 @@ import requests
 from humanfriendly.tables import format_pretty_table
 from requests.auth import HTTPBasicAuth
 
+from .cached import get_bamboo_plan_shortname
 from .config import Config
 from .commandhandler import CommandHandler
 from .querybuilder import QueryBuilder
 from .rest.bambooclient import BambooClient
-
+from .gitcontext import get_branch, get_repo_name
 
 class BuildHandler(CommandHandler):
 
@@ -62,7 +63,7 @@ class BuildHandler(CommandHandler):
         builds = []
         for build in res:
             plan_key = build['planKey']
-            plan_name = cached.get_bamboo_plan_shortname(self.client, plan_key)
+            plan_name = get_bamboo_plan_shortname(self.client, plan_key)
             builds.append([plan_key,
                            plan_name,
                            build['buildNumber'],
@@ -83,11 +84,11 @@ class BuildHandler(CommandHandler):
         click.echo("Scheduled build %d for %s at: %s" %
                    (build_number, build_plan_key, build_link))
 
-    def enable_plan(self, plan_id, branch):
+    def enable_plan_branch(self, branch_plan_id, branch):
         """Enable plan branch"""
-        if not plan_id:
+        if not branch_plan_id:
             # Find repositories based on current Git repository and branch
-            repo = gitcontext.get_repo_name()
+            repo = get_repo_name()
 
             master_plan_ids = self.config.get_repo_plan_ids(repo)
             if len(master_plan_ids) > 1:
@@ -97,40 +98,94 @@ class BuildHandler(CommandHandler):
                 return
 
             plan_id = master_plan_ids[0]
+            
+            if not branch:
+                branch = get_branch()
+            branch_name = branch.replace('/', '-')
+
+            branch_plan_id = self.get_branch_plan_id(plan_id, branch_name)
+
+            LOG.debug("Enabling plan branch: %s", branch_plan_id)
+        if not branch_plan_id:
+            click.echo("ERROR: No plan branch provided")
+            return
+
+        LOG.debug('Enabling plan %s for branch %s with id %s', plan_id, branch, branch_plan_id)
+        
+        plan_ref = ""
+        if branch_plan_id:
+            res = self.client.enable_plan(branch_plan_id)
+            click.echo(
+                "Enabled branch %s (%s) for plan %s"%(branch, branch_plan_id, plan_id))
+        else:
+            # If the plan branch does not exist - try to create it
+            res = self.client.create_plan_branch(plan_id, branch_name, branch)
+            plan_ref = res['link']['href']
+            click.echo(
+                "Created new branch %s for plan %s: %s"%(branch, plan_id, plan_ref))
+
+
+    def disable_plan_branch(self, plan_id, branch):
+        """Disable plan branch"""
+        if not plan_id:
+            # Find repositories based on current Git repository and branch
+            repo = get_repo_name()
+
+            master_plan_ids = self.config.get_repo_plan_ids(repo)
+            if len(master_plan_ids) > 1:
+                click.echo(
+                    "ERROR: Ambiguous plan ids for repository %s repo: %s" %(
+                    repo, str(master_plan_ids)))
+                return
+
+            plan_id = master_plan_ids[0]
 
         if not plan_id:
             click.echo("ERROR: No plan provided")
             return
 
         if not branch:
-            branch = gitcontext.get_branch()
+            branch = get_branch()
         branch_name = branch.replace('/', '-')
 
-        LOG.debug('Enabling plan %s for branch %s', plan_id, branch)
+        branch_plan_id = self.get_branch_plan_id(plan_id, branch_name)
 
-        res = self.client.enable_plan(plan_id, branch_name, branch)
+        if not branch_plan_id:
+            click.echo("ERROR: Branch doesn't exist")
+            return
 
-        plan_ref = res['link']['href']
+        LOG.debug('Disabling plan %s for branch %s', plan_id, branch)
+
+        res = self.client.disable_plan(branch_plan_id)
 
         click.echo(
-            "Enabled branch %s for plan %s: %s", branch, plan_id, plan_ref)
+            "Disabled branch %s (%s) for plan %s"%(branch, branch_plan_id, plan_id))
+
+    def get_branch_plan_id(self, plan_id, branch_name):
+        plan_branches = self.client.get_plan_branches(plan_id)
+
+        branch_plan_id = ''
+        for plan_branch in plan_branches:
+            if plan_branch['shortName'] == branch_name:
+                branch_plan_id = plan_branch['key']
+        return branch_plan_id
 
     def list_plan_branches(self, plan_id):
         """List plan branches"""
         LOG.debug('Getting list of branches for plan: %s', str(plan_id))
 
         if not plan_id:
-            repo = gitcontext.get_repo_name()
+            repo = get_repo_name()
             master_plan_ids = self.config.get_repo_plan_ids(repo)
 
             if len(master_plan_ids) == 0:
-                click.echo("ERROR: Please provide plan id for %s", repo)
+                click.echo("ERROR: Please provide plan id for %s"%(repo))
                 return
 
             if len(master_plan_ids) > 1:
                 click.echo(
                     """ERROR: Multiple plan ids defined for %s.
-                    Please provide specific plan id.""", repo)
+                    Please provide specific plan id."""%(repo))
 
             plan_id = master_plan_ids[0]
 
@@ -153,9 +208,9 @@ class BuildHandler(CommandHandler):
 
         if not plan_ids:
             # Find repositories based on current Git repository and branch
-            repo = gitcontext.get_repo_name()
+            repo = get_repo_name()
             if not branch:
-                branch = gitcontext.get_branch()
+                branch = get_branch()
             branch = branch.replace('/', '-')
 
             master_plan_ids = self.config.get_repo_plan_ids(repo)
@@ -190,7 +245,7 @@ class BuildHandler(CommandHandler):
             plan_results = self.client.get_plan_results(plan_id)
 
             # for result in plan_results:
-            plan_name = cached.get_bamboo_plan_shortname(self.client, plan_id)
+            plan_name = get_bamboo_plan_shortname(self.client, plan_id)
 
             if plan_results['results']['result']:
                 last_result = plan_results['results']['result'][0]
@@ -208,7 +263,7 @@ class BuildHandler(CommandHandler):
         LOG.debug('Getting list of artifacts for plan: %s', str(plan_id))
 
         if not plan_id:
-            repo = gitcontext.get_repo_name()
+            repo = get_repo_name()
             master_plan_ids = self.config.get_repo_plan_ids(repo)
 
             if len(master_plan_ids) == 0:
@@ -247,7 +302,7 @@ class BuildHandler(CommandHandler):
 
         for result in build_results:
             results.append([result['key'],
-                            result['plan']['shortName'],
+                            result['plan']['key'],
                             result['plan']['shortName'],
                             result['buildState']])
 

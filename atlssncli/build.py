@@ -59,12 +59,12 @@ def run(build, plan_id):
 @click.argument('plan_id', required=False, nargs=-1)
 @click.option('-b', '--branch', help='Branch name')
 @pass_build
-def enable(build, plan_id, branch):
+def enable_branch(build, plan_id, branch):
     """Enable branch for plan"""
     LOG.debug("Enabling branch %s for plan %s", branch, plan_id)
     try:
         handler = BuildHandler(build.get_config())
-        handler.enable_plan(plan_id, branch)
+        handler.enable_plan_branch(plan_id, branch)
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Branch enable failed")
@@ -74,12 +74,12 @@ def enable(build, plan_id, branch):
 @click.argument('plan_id', required=False, nargs=-1)
 @click.option('-b', '--branch', help='Branch name')
 @pass_build
-def disable(build, plan_id, branch):
+def disable_branch(build, plan_id, branch):
     """Disable branch for plan."""
     LOG.debug("Disabling branch %s for plan %s", branch, plan_id)
     try:
         handler = BuildHandler(build.get_config())
-        handler.disable_plan(plan_id)
+        handler.disable_plan_branch(plan_id, branch)
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Branch disable failed")
@@ -90,7 +90,7 @@ def disable(build, plan_id, branch):
 @click.option('-b', '--branch', help='Branch name')
 @pass_build
 def status(build, plan_id, branch):
-    """Get plan status."""
+    """Get plan branch status."""
     LOG.debug("Getting plan status %s", plan_id)
 
     try:
@@ -127,6 +127,7 @@ def list_branches(build, plan_id):
         traceback.print_exc()
         raise click.ClickException("Listing plan branches failed")
 
+
 @build.command('list-artifacts')
 @click.argument('plan_id', required=False, nargs=1)
 @pass_build
@@ -140,6 +141,7 @@ def list_artifacts(build, plan_id):
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Listing plan artifacts failed")
+
 
 @build.command('results')
 @click.argument('issue_id', required=False, nargs=1)

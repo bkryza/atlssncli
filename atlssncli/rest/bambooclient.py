@@ -17,7 +17,7 @@
 import logging as LOG
 import json
 
-from decorest import GET, POST, PUT, query, RestClient, content, accept, on
+from decorest import DELETE, GET, POST, PUT, query, RestClient, content, accept, on
 
 
 class BambooClient(RestClient):
@@ -117,5 +117,19 @@ class BambooClient(RestClient):
     @content('application/json')
     @accept('application/json')
     @on(200, lambda r: r.json())
-    def enable_plan(self, plan_id, branch_name, vcs_branch):
+    def create_plan_branch(self, plan_id, branch_name, vcs_branch):
         """Enable plan branch"""
+
+    @POST('plan/{plan_id}/enable')
+    @content('application/json')
+    @accept('application/json')
+    @on(200, lambda r: r.json())
+    def enable_plan(self, plan_id):
+        """Enable plan branch"""
+
+    @DELETE('plan/{plan_id}/enable')
+    @content('application/json')
+    @accept('application/json')
+    @on(200, lambda r: r.json())
+    def disable_plan(self, plan_id):
+        """Disable plan branch"""
