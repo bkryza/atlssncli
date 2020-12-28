@@ -34,6 +34,7 @@ class BuildHandler(CommandHandler):
     def __init__(self, config):
         super(BuildHandler, self).__init__(config)
         self.client = BambooClient(config.get_endpoint("bamboo"))
+        self.bamboo_host = config.get_endpoint_host("bamboo")
         self.client._set_auth(HTTPBasicAuth(*config.get_auth()))
         pass
 
@@ -280,8 +281,8 @@ class BuildHandler(CommandHandler):
                         plan_name,
                         status,
                         last_result["state"],
-                        "https://bamboo.onedata.org/browse/{}".format(
-                            last_result["key"]
+                        "https://{}/browse/{}".format(
+                            self.bamboo_host, last_result["key"]
                         ),
                     ]
                 )

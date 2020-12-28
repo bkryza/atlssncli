@@ -17,6 +17,7 @@
 import configparser
 import logging as LOG
 from os.path import expanduser, join
+from urllib.parse import urlparse
 
 HOME_DIR = expanduser("~")
 CONFIG_DIR = join(HOME_DIR, ".atlssncli")
@@ -80,6 +81,11 @@ class Config(object):
         """Get endpoint of specific service"""
 
         return self.config.get(service, "endpoint")
+
+    def get_endpoint_host(self, service):
+        """Get hostname of a specific service"""
+
+        return urlparse(self.get_endpoint(service)).hostname
 
     def get_board(self):
         """Get active board"""
