@@ -43,14 +43,14 @@ def help(ctx):
 @click.pass_context
 def list_ssh_keys(ctx):
     """List Bitbucket SSH keys for this account"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("add-ssh-key")
 @click.pass_context
 def add_ssh_key(ctx):
     """Add SSH key to Bitbucket for this account"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("create-repository")
@@ -58,7 +58,7 @@ def add_ssh_key(ctx):
 @pass_git
 def create_repository(git):
     """Create repository"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("create-pull-request")
@@ -68,7 +68,7 @@ def create_repository(git):
 @pass_git
 def create_pull_request(git, source_branch, target_branch):
     """Create repository"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("merge-pull-request")
@@ -77,7 +77,7 @@ def create_pull_request(git, source_branch, target_branch):
 @pass_git
 def merge_pull_request(git, pullrequest_id):
     """Merge pull request"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("decline-pull-request")
@@ -86,7 +86,7 @@ def merge_pull_request(git, pullrequest_id):
 @pass_git
 def decline_pull_request(git, pullrequest_id):
     """Decline pull request"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("create-branch")
@@ -95,7 +95,7 @@ def decline_pull_request(git, pullrequest_id):
 @pass_git
 def create_branch(git, repository, branch):
     """Create branch"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("delete-branch")
@@ -104,7 +104,7 @@ def create_branch(git, repository, branch):
 @pass_git
 def delete_branch(git, repository, branch):
     """Delete branch"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @git.command("delete-branch")
@@ -112,4 +112,4 @@ def delete_branch(git, repository, branch):
 @pass_git
 def list_branches(git, repository):
     """List branches"""
-    pass
+    raise click.ClickException("Not implemented")

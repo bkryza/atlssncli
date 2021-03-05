@@ -146,7 +146,7 @@ def status(issue, issue_id):
 @pass_issue
 def delete(issue, issue_id):
     """Delete issue"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @issue.command()
@@ -171,7 +171,7 @@ def assign(issue, issue_id, assignee):
 @pass_issue
 def transitions(issue, issue_id):
     """List possible transitions"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @issue.command("transition")
@@ -180,7 +180,7 @@ def transitions(issue, issue_id):
 @pass_issue
 def transition(issue, issue_id, state):
     """Transition the issue to another state"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @issue.command("list-votes")
@@ -188,7 +188,7 @@ def transition(issue, issue_id, state):
 @pass_issue
 def list_votes(issue, issue_id):
     """List issue votes"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @issue.command()
@@ -196,7 +196,7 @@ def list_votes(issue, issue_id):
 @pass_issue
 def vote(issue, issue_id):
     """Vote for an issue"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @issue.command()
@@ -204,7 +204,7 @@ def vote(issue, issue_id):
 @pass_issue
 def unvote(issue, issue_id):
     """Unvote an issue"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @issue.command("branch")
@@ -214,7 +214,7 @@ def unvote(issue, issue_id):
 @pass_issue
 def branch(issue, issue_id, repository, branch):
     """Create an issue branch in repository from existing branch"""
-    pass
+    raise click.ClickException("Not implemented")
 
 
 @issue.command("branches")
@@ -222,4 +222,4 @@ def branch(issue, issue_id, repository, branch):
 @pass_issue
 def branches(issue, issue_id):
     """List branches created for this issue"""
-    pass
+    raise click.ClickException("Not implemented")
