@@ -36,6 +36,8 @@ to provide as quick as possible access to most commonly used features,
 assuming that more complex can be achieved otherwise, e.g. using web
 interface or other command line clients.
 
+Please note, that atlssncli_ is tested with Jira® version 7.12.3 and Bamboo®
+version 6.9.2 only.
 
 Installation
 ============

@@ -43,14 +43,15 @@ def help(ctx):
 
 
 @build.command()
-@click.argument("plan_id")
+@click.argument("plan_id", required=False, nargs=-1)
+@click.option("-b", "--branch", help="Branch name")
 @pass_build
-def run(build, plan_id):
+def run(build, plan_id, branch):
     """Add plan to build queue."""
     LOG.debug("Adding plan to build queue %s", plan_id)
     try:
         handler = BuildHandler(build.get_config())
-        handler.build_plan(plan_id)
+        handler.build_plan(plan_id, branch)
     except Exception:
         traceback.print_exc()
         raise click.ClickException("Get plan failed")

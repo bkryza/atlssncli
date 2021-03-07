@@ -76,11 +76,38 @@ class BuildHandler(CommandHandler):
 
         click.echo(format_pretty_table(builds, column_names))
 
-    def build_plan(self, plan_id):
+    def build_plan(self, branch_plan_id, branch):
         """Schedule plan build."""
-        LOG.debug("Queuing build plan: %s" % (plan_id))
+        if not branch_plan_id:
+            # Find repositories based on current Git repository and branch
+            repo = get_repo_name()
 
-        res = self.client.build_plan(plan_id)
+            master_plan_ids = self.config.get_repo_plan_ids(repo)
+            if len(master_plan_ids) > 1:
+                click.echo(
+                    "ERROR: Ambiguous plan ids for repository %s repo: %s",
+                    repo,
+                    str(master_plan_ids),
+                )
+                return
+
+            plan_id = master_plan_ids[0]
+
+            if not branch:
+                branch = get_branch()
+            branch_name = branch.replace("/", "-")
+
+            branch_plan_id = self.get_branch_plan_id(plan_id, branch_name)
+
+            LOG.debug("Enabling plan branch: %s", branch_plan_id)
+        if not branch_plan_id:
+            click.echo("ERROR: No plan branch provided")
+            return
+
+
+        LOG.debug("Queuing build plan: %s" % (branch_plan_id))
+
+        res = self.client.build_plan(branch_plan_id)
 
         build_link = res["link"]["href"]
         build_plan_key = res["planKey"]
