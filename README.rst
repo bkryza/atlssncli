@@ -71,6 +71,27 @@ Configuration file should be placed in `~/.atlssncli/config.ini`:
 	component2 = BKP-CMP2
 	component3 = BKP-CMP3
 
+Autocompletion
+--------------
+
+Bash
+~~~~
+Add the following line to your `~/.bashrc`:
+
+.. code-block:: bash
+
+    eval "$(_ATLSSN_COMPLETE=source_bash atlssn)"
+
+
+Zsh
+~~~
+Add the following line to your `~/.zshrc`:
+
+.. code-block:: bash
+
+    eval "$(_ATLSSN_COMPLETE=source_zsh atlssn)"
+
+
 Basic usage
 ===========
 
