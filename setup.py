@@ -12,7 +12,7 @@ requirements = []
 setup(
     name = "atlssncli",
     version = ".".join(map(str, __version__)),
-    description = "",
+    description = "Simple command-line client unifying access to Atlassian® services.",
     long_description = read('README.rst'),
     url = 'https://github.com/bkryza/atlssncli',
     license = 'Apache License 2.0',
